@@ -1,10 +1,8 @@
   /* find predicate logic symbols */
 
 %option noyywrap
-
-
 %{
-	#include "logic.tab.h";
+	#include "logic.tab.h"
 %}
 
 DIGIT    [0-9]
@@ -18,51 +16,53 @@ INTEGER {DIGIT}+
             }
 
 [a-m]{INTEGER}?       {/* function name */
-            printf( "function name: %s",yytext );
+            printf( "function name: %s\n",yytext );
 			return FUNCTION;
             }
 			
 [A-Z]{INTEGER}?       {/* predicate */
             printf( "predicate: %s\n",yytext );
-			return PREDICATE
+			return PREDICATE;
             }
 			
 \& {
-	printf("AND");
+	printf("AND\n");
 	return AND;
 			}
 \| {
-	printf("OR");
+	printf("OR\n");
 	return OR;
 			}
 \~ {
-	printf("NOT");
+	printf("NOT\n");
 	return NOT;
 			}
-(\-\>){
-	printf("IMPLICATION");
+	
+\-\> {
+	printf("IMPLICATION\n");
 	return IMPLICATION;
 			}
-(\<\-\>){
-	printf("EQUIVALENCE");
+\<\-\> {
+	printf("EQUIVALENCE\n");
 	return EQUIVALENCE;
 			}
 			
-all{
-	printf("ALL");
+all {
+	printf("ALL\n");
 	return ALL;
 			}
 
 ex   {/* quantifier */
-   printf( "EXIST");
+   printf( "EXIST\n");
    return EXIST;
-            }
+            }	
+
 top   {/* top */
-   printf( "TOP");
+   printf( "TOP\n");
    return TOP;
             }	
 bottom   {/* bottom */
-   printf( "BOTTOM");
+   printf( "BOTTOM\n");
    return BOTTOM;
             }			
 
@@ -84,16 +84,3 @@ bottom   {/* bottom */
         printf( "warning, unexpected token: %s\n", yytext );
       }
 %%
-
-int main( int argc, char **argv )       
-{
-   ++argv, --argc;  /* skip over program name */
-   if ( argc > 0 )
-      yyin = fopen( argv[0], "r" );
-   else
-      yyin = stdin;
-   
-   yylex();
-   
-   printf("\nProgram finished");
-}
