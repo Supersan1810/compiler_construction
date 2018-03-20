@@ -1,1 +1,0 @@
-ex x (P(x) & Q22(x,y2)) or Q(x) <-> ~ P(x) -> bottom

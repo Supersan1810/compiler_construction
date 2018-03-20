@@ -11,76 +11,77 @@ INTEGER {DIGIT}+
 %%
 
 [n-z]{INTEGER}?   {/* variable */
-   printf( "variable: %s\n", yytext );
+   printf("lexer: variable: %s\n", yytext );
    return VARIABLE;
             }
 
 [a-m]{INTEGER}?       {/* function name */
-            printf( "function name: %s\n",yytext );
+            printf("lexer: function name: %s\n",yytext );
 			return FUNCTION;
             }
 			
 [A-Z]{INTEGER}?       {/* predicate */
-            printf( "predicate: %s\n",yytext );
+            printf("lexer: predicate: %s\n",yytext );
 			return PREDICATE;
             }
 			
 \& {
-	printf("AND\n");
+	printf("lexer: AND\n");
 	return AND;
 			}
 \| {
-	printf("OR\n");
+	printf("lexer: OR\n");
 	return OR;
 			}
 \~ {
-	printf("NOT\n");
+	printf("lexer: NOT\n");
 	return NOT;
 			}
 	
 \-\> {
-	printf("IMPLICATION\n");
+	printf("lexer: IMPLICATION\n");
 	return IMPLICATION;
 			}
 \<\-\> {
-	printf("EQUIVALENCE\n");
+	printf("lexer: EQUIVALENCE\n");
 	return EQUIVALENCE;
 			}
 			
 all {
-	printf("ALL\n");
+	printf("lexer: ALL\n");
 	return ALL;
 			}
 
 ex   {/* quantifier */
-   printf( "EXIST\n");
+   printf("lexer: EXIST\n");
    return EXIST;
             }	
 
 top   {/* top */
-   printf( "TOP\n");
+   printf("lexer: TOP\n");
    return TOP;
             }	
 bottom   {/* bottom */
-   printf( "BOTTOM\n");
+   printf("lexer: BOTTOM\n");
    return BOTTOM;
             }			
 
 [ ] {/* space*/
-   printf( "space: \"%s\"\n",yytext);
+   
 		}			
 \( {/*open parenthesis*/
-	printf("parenthesis: %s\n",yytext);
+	printf("lexer: parenthesis: %s\n",yytext);
 	return OPENPAR;
 }	
 \) {/*close parenthesis*/
-	printf("parenthesis: %s\n",yytext);
+	printf("lexer: parenthesis: %s\n",yytext);
 	return CLOSEPAR;
 }		
 \, {/*comma*/
-	printf("comma: %s\n", yytext);
+	printf("lexer: comma: %s\n", yytext);
+	return COMMA;
 }
 \n|. { 
-        printf( "warning, unexpected token: %s\n", yytext );
+        printf("lexer: warning, unexpected token: %s\n", yytext );
       }
 %%

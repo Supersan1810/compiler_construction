@@ -387,18 +387,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  17
+#define YYFINAL  19
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   44
+#define YYLAST   49
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  19
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  4
+#define YYNNTS  5
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  16
+#define YYNRULES  20
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  29
+#define YYNSTATES  38
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
@@ -447,7 +447,8 @@ static const yytype_uint8 yytranslate[] =
 static const yytype_uint8 yyrline[] =
 {
        0,    39,    39,    40,    41,    42,    43,    44,    45,    46,
-      47,    48,    49,    51,    52,    54,    55
+      47,    48,    49,    51,    52,    54,    55,    56,    58,    59,
+      60
 };
 #endif
 
@@ -459,7 +460,7 @@ static const char *const yytname[] =
   "$end", "error", "$undefined", "OPENPAR", "CLOSEPAR", "COMMA", "TOP",
   "BOTTOM", "VARIABLE", "EQUIVALENCE", "IMPLICATION", "OR", "AND", "NOT",
   "ALL", "EXIST", "PREDICATE", "FUNCTION", "ERROR", "$accept", "formula",
-  "term", "atom", YY_NULLPTR
+  "termsequence", "term", "atom", YY_NULLPTR
 };
 #endif
 
@@ -473,10 +474,10 @@ static const yytype_uint16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF -7
+#define YYPACT_NINF -13
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-7)))
+  (!!((Yystate) == (-13)))
 
 #define YYTABLE_NINF -1
 
@@ -487,9 +488,10 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      18,    18,    -7,    -7,    -7,    18,    -6,    -5,    -7,    -7,
-       1,    -7,    -7,    32,    -7,    18,    18,    -7,    18,    18,
-      18,    18,    -7,    -4,    -4,    -4,    17,    -3,    -7
+      21,    21,   -13,   -13,   -13,    21,     8,    10,     4,     6,
+       1,   -13,   -13,    35,   -13,    21,    21,     0,     0,   -13,
+      21,    21,    21,    21,   -13,    31,    31,    -2,   -13,    44,
+      31,    20,    13,   -13,   -13,     0,   -13,   -13
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -497,21 +499,22 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,     0,     5,     6,    13,     0,     0,     0,    15,    14,
-       0,    16,     2,     0,     3,     0,     0,     1,     0,     0,
-       0,     0,     4,    11,    12,    10,     9,     8,     7
+       0,     0,     5,     6,    15,     0,     0,     0,    18,    16,
+       0,    20,     2,     0,     3,     0,     0,     0,     0,     1,
+       0,     0,     0,     0,     4,    11,    12,     0,    13,     0,
+      10,     9,     8,     7,    19,     0,    17,    14
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -7,    -1,    -7,    -7
+     -13,    -1,    15,   -12,   -13
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,    10,    11,    12
+      -1,    10,    27,    11,    12
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -519,20 +522,20 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      13,    17,    15,    16,    14,    18,    19,    20,    21,    21,
-      18,    19,    20,    21,    23,    24,     0,    25,    26,    27,
-      28,     1,     0,     0,     2,     3,     4,    19,    20,    21,
-       0,     5,     6,     7,     8,     9,    22,     0,     0,     0,
-       0,    18,    19,    20,    21
+      13,    19,    34,    35,    14,    28,    28,    17,     4,    18,
+      20,    21,    22,    23,    25,    26,    15,     9,    16,    30,
+      31,    32,    33,    37,     1,    23,     0,     2,     3,     4,
+      21,    22,    23,    29,     5,     6,     7,     8,     9,    24,
+      20,    21,    22,    23,    20,    21,    22,    23,    36,    35
 };
 
 static const yytype_int8 yycheck[] =
 {
-       1,     0,     8,     8,     5,     9,    10,    11,    12,    12,
-       9,    10,    11,    12,    15,    16,    -1,    18,    19,    20,
-      21,     3,    -1,    -1,     6,     7,     8,    10,    11,    12,
-      -1,    13,    14,    15,    16,    17,     4,    -1,    -1,    -1,
-      -1,     9,    10,    11,    12
+       1,     0,     4,     5,     5,    17,    18,     3,     8,     3,
+       9,    10,    11,    12,    15,    16,     8,    17,     8,    20,
+      21,    22,    23,    35,     3,    12,    -1,     6,     7,     8,
+      10,    11,    12,    18,    13,    14,    15,    16,    17,     4,
+       9,    10,    11,    12,     9,    10,    11,    12,     4,     5
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -540,22 +543,25 @@ static const yytype_int8 yycheck[] =
 static const yytype_uint8 yystos[] =
 {
        0,     3,     6,     7,     8,    13,    14,    15,    16,    17,
-      20,    21,    22,    20,    20,     8,     8,     0,     9,    10,
-      11,    12,     4,    20,    20,    20,    20,    20,    20
+      20,    22,    23,    20,    20,     8,     8,     3,     3,     0,
+       9,    10,    11,    12,     4,    20,    20,    21,    22,    21,
+      20,    20,    20,    20,     4,     5,     4,    22
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
        0,    19,    20,    20,    20,    20,    20,    20,    20,    20,
-      20,    20,    20,    21,    21,    22,    22
+      20,    20,    20,    21,    21,    22,    22,    22,    23,    23,
+      23
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     1,     2,     3,     1,     1,     3,     3,     3,
-       3,     3,     3,     1,     1,     1,     1
+       3,     3,     3,     1,     3,     1,     1,     4,     1,     4,
+       1
 };
 
 
@@ -1233,96 +1239,120 @@ yyreduce:
     {
         case 2:
 #line 39 "logic.y" /* yacc.c:1646  */
-    {}
-#line 1238 "logic.tab.c" /* yacc.c:1646  */
+    {puts("bison: formula = atom");}
+#line 1244 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
 #line 40 "logic.y" /* yacc.c:1646  */
-    {}
-#line 1244 "logic.tab.c" /* yacc.c:1646  */
+    {puts("bison: formula = not formula");}
+#line 1250 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
 #line 41 "logic.y" /* yacc.c:1646  */
-    {}
-#line 1250 "logic.tab.c" /* yacc.c:1646  */
+    {puts("bison: formula = ( formula )");}
+#line 1256 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
 #line 42 "logic.y" /* yacc.c:1646  */
-    {}
-#line 1256 "logic.tab.c" /* yacc.c:1646  */
+    {puts("bison: formula = top");}
+#line 1262 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
 #line 43 "logic.y" /* yacc.c:1646  */
-    {}
-#line 1262 "logic.tab.c" /* yacc.c:1646  */
+    {puts("bison: formula = bottom");}
+#line 1268 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
 #line 44 "logic.y" /* yacc.c:1646  */
-    {}
-#line 1268 "logic.tab.c" /* yacc.c:1646  */
+    {puts("bison: formula = formula and formula");}
+#line 1274 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
 #line 45 "logic.y" /* yacc.c:1646  */
-    {}
-#line 1274 "logic.tab.c" /* yacc.c:1646  */
+    {puts("bison: formula = formula or formula");}
+#line 1280 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
 #line 46 "logic.y" /* yacc.c:1646  */
-    {}
-#line 1280 "logic.tab.c" /* yacc.c:1646  */
+    {puts("bison: formula = formula implication formula");}
+#line 1286 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
 #line 47 "logic.y" /* yacc.c:1646  */
-    {}
-#line 1286 "logic.tab.c" /* yacc.c:1646  */
+    {puts("bison: formula = formula implication formula");}
+#line 1292 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
 #line 48 "logic.y" /* yacc.c:1646  */
-    {}
-#line 1292 "logic.tab.c" /* yacc.c:1646  */
+    {puts("bison: formula = all variable formula");}
+#line 1298 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
 #line 49 "logic.y" /* yacc.c:1646  */
-    {}
-#line 1298 "logic.tab.c" /* yacc.c:1646  */
+    {puts("bison: formula = exist variable formula");}
+#line 1304 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
 #line 51 "logic.y" /* yacc.c:1646  */
-    {}
-#line 1304 "logic.tab.c" /* yacc.c:1646  */
+    {puts("bison: termsequence = term");}
+#line 1310 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
 #line 52 "logic.y" /* yacc.c:1646  */
-    {}
-#line 1310 "logic.tab.c" /* yacc.c:1646  */
+    {puts("bison: termsequence = termsequence comma term");}
+#line 1316 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
 #line 54 "logic.y" /* yacc.c:1646  */
-    {}
-#line 1316 "logic.tab.c" /* yacc.c:1646  */
+    {puts("bison: term = variable");}
+#line 1322 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
 #line 55 "logic.y" /* yacc.c:1646  */
-    {}
-#line 1322 "logic.tab.c" /* yacc.c:1646  */
+    {puts("bison: term = function");}
+#line 1328 "logic.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 17:
+#line 56 "logic.y" /* yacc.c:1646  */
+    {puts("bison: term = function(termsequence)");}
+#line 1334 "logic.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 18:
+#line 58 "logic.y" /* yacc.c:1646  */
+    {puts("bison: atom= predicate");}
+#line 1340 "logic.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 19:
+#line 59 "logic.y" /* yacc.c:1646  */
+    {puts("bison: atom = predicate(termsequence)");}
+#line 1346 "logic.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 20:
+#line 60 "logic.y" /* yacc.c:1646  */
+    {puts("bison: atom = term");}
+#line 1352 "logic.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1326 "logic.tab.c" /* yacc.c:1646  */
+#line 1356 "logic.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1550,18 +1580,19 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 59 "logic.y" /* yacc.c:1906  */
+#line 65 "logic.y" /* yacc.c:1906  */
 
 
 int yyerror(char* err)
 {
-   printf("Error: %s\n", err);
+   printf("Error: %s", err);
    return 0;
 }
 
 
 int main (int argc, char* argv[])
 {
-  
+  puts("bison: Starting");
   return yyparse();
+  puts("bison: Ending");
 }

@@ -36,23 +36,29 @@
 
 %%
 /* hier kommen die Regeln	*/
-formula: atom{}
-		| NOT formula {}
-		| OPENPAR formula CLOSEPAR {}
-		| TOP {}
-		| BOTTOM {}
-		| formula AND formula {}
-		| formula OR formula {}
-		| formula IMPLICATION formula {}
-		| formula EQUIVALENCE formula {}
-		| ALL VARIABLE formula {}
-		| EXIST VARIABLE formula {};
+formula:  atom{puts("bison: formula = atom");}
+		| NOT formula {puts("bison: formula = not formula");}
+		| OPENPAR formula CLOSEPAR {puts("bison: formula = ( formula )");}
+		| TOP {puts("bison: formula = top");}
+		| BOTTOM {puts("bison: formula = bottom");}
+		| formula AND formula {puts("bison: formula = formula and formula");}
+		| formula OR formula {puts("bison: formula = formula or formula");}
+		| formula IMPLICATION formula {puts("bison: formula = formula implication formula");}
+		| formula EQUIVALENCE formula {puts("bison: formula = formula implication formula");}
+		| ALL VARIABLE formula {puts("bison: formula = all variable formula");}
+		| EXIST VARIABLE formula {puts("bison: formula = exist variable formula");};
   
-term: VARIABLE {}
-		| FUNCTION {};
+termsequence: term {puts("bison: termsequence = term");}
+		| 	  termsequence COMMA term {puts("bison: termsequence = termsequence comma term");};
 		
-atom: PREDICATE {}
-		| term {};
+term:     VARIABLE {puts("bison: term = variable");}
+		| FUNCTION {puts("bison: term = function");}
+		| FUNCTION OPENPAR termsequence CLOSEPAR {puts("bison: term = function(termsequence)");};
+		
+atom:     PREDICATE {puts("bison: atom= predicate");}
+		| PREDICATE OPENPAR termsequence CLOSEPAR {puts("bison: atom = predicate(termsequence)");}
+		| term {puts("bison: atom = term");};
+		
 
 
 
@@ -60,13 +66,14 @@ atom: PREDICATE {}
 
 int yyerror(char* err)
 {
-   printf("Error: %s\n", err);
+   printf("Error: %s", err);
    return 0;
 }
 
 
 int main (int argc, char* argv[])
 {
-  
+  puts("bison: Starting");
   return yyparse();
+  puts("bison: Ending");
 }
