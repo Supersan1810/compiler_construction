@@ -7,6 +7,7 @@
 
    extern int yyerror(char* err);
    extern int yylex(void);
+   
 %}
 
 %union {
@@ -25,7 +26,7 @@
 
 %precedence EQUIVALENCE
 %precedence IMPLICATION
-%left  OR
+%precedence  OR
 %left  AND
 %precedence  NOT
 %precedence ALL EXIST
@@ -41,12 +42,12 @@ formula:  atom{puts("bison: formula = atom");}
 		| OPENPAR formula CLOSEPAR {puts("bison: formula = ( formula )");}
 		| TOP {puts("bison: formula = top");}
 		| BOTTOM {puts("bison: formula = bottom");}
+		| ALL VARIABLE formula {puts("bison: formula = all variable formula");}
+		| EXIST VARIABLE formula {puts("bison: formula = exist variable formula");}
 		| formula AND formula {puts("bison: formula = formula and formula");}
 		| formula OR formula {puts("bison: formula = formula or formula");}
 		| formula IMPLICATION formula {puts("bison: formula = formula implication formula");}
-		| formula EQUIVALENCE formula {puts("bison: formula = formula implication formula");}
-		| ALL VARIABLE formula {puts("bison: formula = all variable formula");}
-		| EXIST VARIABLE formula {puts("bison: formula = exist variable formula");};
+		| formula EQUIVALENCE formula {puts("bison: formula = formula implication formula");};
   
 termsequence: term {puts("bison: termsequence = term");}
 		| 	  termsequence COMMA term {puts("bison: termsequence = termsequence comma term");};

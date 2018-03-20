@@ -69,7 +69,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 12 "logic.y" /* yacc.c:1909  */
+#line 13 "logic.y" /* yacc.c:1909  */
 
    char* var; /*strdup(yytext)*/
 

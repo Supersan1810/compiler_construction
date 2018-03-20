@@ -68,8 +68,9 @@
 
    extern int yyerror(char* err);
    extern int yylex(void);
+   
 
-#line 73 "logic.tab.c" /* yacc.c:339  */
+#line 74 "logic.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -128,11 +129,11 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 12 "logic.y" /* yacc.c:355  */
+#line 13 "logic.y" /* yacc.c:355  */
 
    char* var; /*strdup(yytext)*/
 
-#line 136 "logic.tab.c" /* yacc.c:355  */
+#line 137 "logic.tab.c" /* yacc.c:355  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
@@ -147,7 +148,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 151 "logic.tab.c" /* yacc.c:358  */
+#line 152 "logic.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -446,9 +447,9 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    39,    39,    40,    41,    42,    43,    44,    45,    46,
-      47,    48,    49,    51,    52,    54,    55,    56,    58,    59,
-      60
+       0,    40,    40,    41,    42,    43,    44,    45,    46,    47,
+      48,    49,    50,    52,    53,    55,    56,    57,    59,    60,
+      61
 };
 #endif
 
@@ -491,7 +492,7 @@ static const yytype_int8 yypact[] =
       21,    21,   -13,   -13,   -13,    21,     8,    10,     4,     6,
        1,   -13,   -13,    35,   -13,    21,    21,     0,     0,   -13,
       21,    21,    21,    21,   -13,    31,    31,    -2,   -13,    44,
-      31,    20,    13,   -13,   -13,     0,   -13,   -13
+      31,    20,    14,   -13,   -13,     0,   -13,   -13
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -501,8 +502,8 @@ static const yytype_uint8 yydefact[] =
 {
        0,     0,     5,     6,    15,     0,     0,     0,    18,    16,
        0,    20,     2,     0,     3,     0,     0,     0,     0,     1,
-       0,     0,     0,     0,     4,    11,    12,     0,    13,     0,
-      10,     9,     8,     7,    19,     0,    17,    14
+       0,     0,     0,     0,     4,     7,     8,     0,    13,     0,
+      12,    11,    10,     9,    19,     0,    17,    14
 };
 
   /* YYPGOTO[NTERM-NUM].  */
@@ -524,16 +525,16 @@ static const yytype_uint8 yytable[] =
 {
       13,    19,    34,    35,    14,    28,    28,    17,     4,    18,
       20,    21,    22,    23,    25,    26,    15,     9,    16,    30,
-      31,    32,    33,    37,     1,    23,     0,     2,     3,     4,
+      31,    32,    33,    37,     1,    22,    23,     2,     3,     4,
       21,    22,    23,    29,     5,     6,     7,     8,     9,    24,
       20,    21,    22,    23,    20,    21,    22,    23,    36,    35
 };
 
-static const yytype_int8 yycheck[] =
+static const yytype_uint8 yycheck[] =
 {
        1,     0,     4,     5,     5,    17,    18,     3,     8,     3,
        9,    10,    11,    12,    15,    16,     8,    17,     8,    20,
-      21,    22,    23,    35,     3,    12,    -1,     6,     7,     8,
+      21,    22,    23,    35,     3,    11,    12,     6,     7,     8,
       10,    11,    12,    18,    13,    14,    15,    16,    17,     4,
        9,    10,    11,    12,     9,    10,    11,    12,     4,     5
 };
@@ -1238,121 +1239,121 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 39 "logic.y" /* yacc.c:1646  */
+#line 40 "logic.y" /* yacc.c:1646  */
     {puts("bison: formula = atom");}
-#line 1244 "logic.tab.c" /* yacc.c:1646  */
+#line 1245 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 40 "logic.y" /* yacc.c:1646  */
+#line 41 "logic.y" /* yacc.c:1646  */
     {puts("bison: formula = not formula");}
-#line 1250 "logic.tab.c" /* yacc.c:1646  */
+#line 1251 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 41 "logic.y" /* yacc.c:1646  */
+#line 42 "logic.y" /* yacc.c:1646  */
     {puts("bison: formula = ( formula )");}
-#line 1256 "logic.tab.c" /* yacc.c:1646  */
+#line 1257 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 42 "logic.y" /* yacc.c:1646  */
+#line 43 "logic.y" /* yacc.c:1646  */
     {puts("bison: formula = top");}
-#line 1262 "logic.tab.c" /* yacc.c:1646  */
+#line 1263 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 43 "logic.y" /* yacc.c:1646  */
+#line 44 "logic.y" /* yacc.c:1646  */
     {puts("bison: formula = bottom");}
-#line 1268 "logic.tab.c" /* yacc.c:1646  */
+#line 1269 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 44 "logic.y" /* yacc.c:1646  */
-    {puts("bison: formula = formula and formula");}
-#line 1274 "logic.tab.c" /* yacc.c:1646  */
+#line 45 "logic.y" /* yacc.c:1646  */
+    {puts("bison: formula = all variable formula");}
+#line 1275 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 45 "logic.y" /* yacc.c:1646  */
-    {puts("bison: formula = formula or formula");}
-#line 1280 "logic.tab.c" /* yacc.c:1646  */
+#line 46 "logic.y" /* yacc.c:1646  */
+    {puts("bison: formula = exist variable formula");}
+#line 1281 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 46 "logic.y" /* yacc.c:1646  */
-    {puts("bison: formula = formula implication formula");}
-#line 1286 "logic.tab.c" /* yacc.c:1646  */
+#line 47 "logic.y" /* yacc.c:1646  */
+    {puts("bison: formula = formula and formula");}
+#line 1287 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 47 "logic.y" /* yacc.c:1646  */
-    {puts("bison: formula = formula implication formula");}
-#line 1292 "logic.tab.c" /* yacc.c:1646  */
+#line 48 "logic.y" /* yacc.c:1646  */
+    {puts("bison: formula = formula or formula");}
+#line 1293 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 48 "logic.y" /* yacc.c:1646  */
-    {puts("bison: formula = all variable formula");}
-#line 1298 "logic.tab.c" /* yacc.c:1646  */
+#line 49 "logic.y" /* yacc.c:1646  */
+    {puts("bison: formula = formula implication formula");}
+#line 1299 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 49 "logic.y" /* yacc.c:1646  */
-    {puts("bison: formula = exist variable formula");}
-#line 1304 "logic.tab.c" /* yacc.c:1646  */
+#line 50 "logic.y" /* yacc.c:1646  */
+    {puts("bison: formula = formula implication formula");}
+#line 1305 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 51 "logic.y" /* yacc.c:1646  */
+#line 52 "logic.y" /* yacc.c:1646  */
     {puts("bison: termsequence = term");}
-#line 1310 "logic.tab.c" /* yacc.c:1646  */
+#line 1311 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 52 "logic.y" /* yacc.c:1646  */
+#line 53 "logic.y" /* yacc.c:1646  */
     {puts("bison: termsequence = termsequence comma term");}
-#line 1316 "logic.tab.c" /* yacc.c:1646  */
+#line 1317 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 54 "logic.y" /* yacc.c:1646  */
+#line 55 "logic.y" /* yacc.c:1646  */
     {puts("bison: term = variable");}
-#line 1322 "logic.tab.c" /* yacc.c:1646  */
+#line 1323 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 55 "logic.y" /* yacc.c:1646  */
+#line 56 "logic.y" /* yacc.c:1646  */
     {puts("bison: term = function");}
-#line 1328 "logic.tab.c" /* yacc.c:1646  */
+#line 1329 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 56 "logic.y" /* yacc.c:1646  */
+#line 57 "logic.y" /* yacc.c:1646  */
     {puts("bison: term = function(termsequence)");}
-#line 1334 "logic.tab.c" /* yacc.c:1646  */
+#line 1335 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 58 "logic.y" /* yacc.c:1646  */
+#line 59 "logic.y" /* yacc.c:1646  */
     {puts("bison: atom= predicate");}
-#line 1340 "logic.tab.c" /* yacc.c:1646  */
+#line 1341 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 59 "logic.y" /* yacc.c:1646  */
+#line 60 "logic.y" /* yacc.c:1646  */
     {puts("bison: atom = predicate(termsequence)");}
-#line 1346 "logic.tab.c" /* yacc.c:1646  */
+#line 1347 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 60 "logic.y" /* yacc.c:1646  */
+#line 61 "logic.y" /* yacc.c:1646  */
     {puts("bison: atom = term");}
-#line 1352 "logic.tab.c" /* yacc.c:1646  */
+#line 1353 "logic.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1356 "logic.tab.c" /* yacc.c:1646  */
+#line 1357 "logic.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1580,7 +1581,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 65 "logic.y" /* yacc.c:1906  */
+#line 66 "logic.y" /* yacc.c:1906  */
 
 
 int yyerror(char* err)
