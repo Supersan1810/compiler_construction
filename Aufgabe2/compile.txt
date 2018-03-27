@@ -1,0 +1,6 @@
+bison -d logic.y
+flex -t input.l > input.c
+gcc -c -o input.o input.c
+gcc -c -o logic.tab.o logic.tab.c
+gcc input.o logic.tab.o -o logic_check
+./logic_check < f1.txt
