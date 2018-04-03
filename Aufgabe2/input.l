@@ -3,6 +3,7 @@
 %option noyywrap
 %{
 	#include "logic.tab.h"
+	#include "structs.h"
 %}
 
 DIGIT    [0-9]
@@ -12,16 +13,19 @@ INTEGER {DIGIT}+
 
 [n-z]{INTEGER}?   {/* variable */
    printf("lexer: variable: %s\n", yytext );
+   yylval.name=yytext;
    return VARIABLE;
             }
 
 [a-m]{INTEGER}?       {/* function name */
             printf("lexer: function name: %s\n",yytext );
+			yylval.name=yytext;
 			return FUNCTION;
             }
 			
 [A-Z]{INTEGER}?       {/* predicate */
             printf("lexer: predicate: %s\n",yytext );
+			yylval.name=yytext;
 			return PREDICATE;
             }
 			

@@ -1,0 +1,1 @@
+ex x (P(x,y) & Q22(x)) | Q(x,f(y),z) <-> ~ P(x) -> bottom

@@ -468,8 +468,9 @@ char *yytext;
 #line 2 "input.l"
   /* find predicate logic symbols */
 	#include "logic.tab.h"
-#line 471 "<stdout>"
+	#include "structs.h"
 #line 472 "<stdout>"
+#line 473 "<stdout>"
 
 #define INITIAL 0
 
@@ -686,10 +687,10 @@ YY_DECL
 		}
 
 	{
-#line 11 "input.l"
+#line 12 "input.l"
 
 
-#line 692 "<stdout>"
+#line 693 "<stdout>"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -748,31 +749,34 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 13 "input.l"
+#line 14 "input.l"
 {/* variable */
    printf("lexer: variable: %s\n", yytext );
+   yylval.name=yytext;
    return VARIABLE;
             }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 18 "input.l"
+#line 20 "input.l"
 {/* function name */
             printf("lexer: function name: %s\n",yytext );
+			yylval.name=yytext;
 			return FUNCTION;
             }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 23 "input.l"
+#line 26 "input.l"
 {/* predicate */
             printf("lexer: predicate: %s\n",yytext );
+			yylval.name=yytext;
 			return PREDICATE;
             }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 28 "input.l"
+#line 32 "input.l"
 {
 	printf("lexer: AND\n");
 	return AND;
@@ -780,7 +784,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 32 "input.l"
+#line 36 "input.l"
 {
 	printf("lexer: OR\n");
 	return OR;
@@ -788,7 +792,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 36 "input.l"
+#line 40 "input.l"
 {
 	printf("lexer: NOT\n");
 	return NOT;
@@ -796,7 +800,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 41 "input.l"
+#line 45 "input.l"
 {
 	printf("lexer: IMPLICATION\n");
 	return IMPLICATION;
@@ -804,7 +808,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 45 "input.l"
+#line 49 "input.l"
 {
 	printf("lexer: EQUIVALENCE\n");
 	return EQUIVALENCE;
@@ -812,7 +816,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 50 "input.l"
+#line 54 "input.l"
 {
 	printf("lexer: ALL\n");
 	return ALL;
@@ -820,7 +824,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 55 "input.l"
+#line 59 "input.l"
 {/* quantifier */
    printf("lexer: EXIST\n");
    return EXIST;
@@ -828,7 +832,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 60 "input.l"
+#line 64 "input.l"
 {/* top */
    printf("lexer: TOP\n");
    return TOP;
@@ -836,7 +840,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 64 "input.l"
+#line 68 "input.l"
 {/* bottom */
    printf("lexer: BOTTOM\n");
    return BOTTOM;
@@ -844,14 +848,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 69 "input.l"
+#line 73 "input.l"
 {/* space*/
    
 		}			
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 72 "input.l"
+#line 76 "input.l"
 {/*open parenthesis*/
 	printf("lexer: parenthesis: %s\n",yytext);
 	return OPENPAR;
@@ -859,7 +863,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 76 "input.l"
+#line 80 "input.l"
 {/*close parenthesis*/
 	printf("lexer: parenthesis: %s\n",yytext);
 	return CLOSEPAR;
@@ -867,7 +871,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 80 "input.l"
+#line 84 "input.l"
 {/*comma*/
 	printf("lexer: comma: %s\n", yytext);
 	return COMMA;
@@ -876,17 +880,17 @@ YY_RULE_SETUP
 case 17:
 /* rule 17 can match eol */
 YY_RULE_SETUP
-#line 84 "input.l"
+#line 88 "input.l"
 { 
         printf("lexer: warning, unexpected token: %s\n", yytext );
       }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 87 "input.l"
+#line 91 "input.l"
 ECHO;
 	YY_BREAK
-#line 889 "<stdout>"
+#line 893 "<stdout>"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1889,6 +1893,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 87 "input.l"
+#line 91 "input.l"
 
 

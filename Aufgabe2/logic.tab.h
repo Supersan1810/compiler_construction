@@ -69,11 +69,13 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 12 "logic.y" /* yacc.c:1909  */
+#line 15 "logic.y" /* yacc.c:1909  */
+ /*for yylval*/
+   char* name; /*strdup(yytext)*/
+   struct formula* f;
+   struct term* t;
 
-   char* var; /*strdup(yytext)*/
-
-#line 77 "logic.tab.h" /* yacc.c:1909  */
+#line 79 "logic.tab.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
