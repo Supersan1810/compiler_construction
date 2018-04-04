@@ -52,20 +52,26 @@ formula:  atom{puts("bison: formula = atom");}
 		| formula EQUIVALENCE formula {puts("bison: formula = formula equivalence formula");};
   
 termsequence: term {puts("bison: termsequence = term");
-					struct termList t=*$<list>1;
+					struct termList t =*$<list>1;
 					puts(t.name);
 					$<list>$=&t;
 					}
 			|termsequence COMMA term {puts("bison: termsequence = termsequence comma term");
+					
 					struct termList t=*$<list>3;
 					t.list=$<list>1;
+					puts("normal:");
 					puts(t.name);
-					puts(t.list->name);					
+					puts(t.list->name);							
+					
 					struct termList copy;
 					copy.name=strdup(t.name);
 					copy.list=t.list;
+					puts("copy:");
+					puts(copy.name);
+					puts(copy.list->name);	
 					$<list>$=&copy;
-					printTermsequence(copy);
+					//printTermsequence(copy);
 		};
 		
 term:     VARIABLE {puts("term = variable:");
@@ -87,6 +93,9 @@ term:     VARIABLE {puts("term = variable:");
 					func.name=$<name>1;
 					puts(func.name);
 					func.list=$<list>3;
+					puts(func.list->name);
+					puts(func.list->name);
+					puts(func.list->name);
 					$<list>$=&func;
 		};
 		
@@ -109,6 +118,16 @@ void printFormula(formula* f){
 	
 }
 
+void addToList(termList* head, termList* tail){
+	termList* pointer = head;
+	if (pointer->list==NULL) puts("null");
+	while(pointer->list!=NULL){
+		puts(pointer->name);
+		pointer=pointer->list;
+	}
+	pointer->list=tail;
+}
+
 void printTermsequence(termList tlist){
 	puts("terms:");
 	puts(tlist.name);
@@ -119,6 +138,7 @@ void printTermsequence(termList tlist){
 		tlist=*tlist.list;
 	}
 }
+
 
 int main (int argc, char* argv[])
 {

@@ -452,8 +452,8 @@ static const yytype_uint8 yytranslate[] =
 static const yytype_uint8 yyrline[] =
 {
        0,    42,    42,    43,    44,    45,    46,    47,    48,    49,
-      50,    51,    52,    54,    59,    71,    78,    85,    93,    94,
-      95
+      50,    51,    52,    54,    59,    77,    84,    91,   102,   103,
+     104
 };
 #endif
 
@@ -1313,7 +1313,7 @@ yyreduce:
   case 13:
 #line 54 "logic.y" /* yacc.c:1646  */
     {puts("bison: termsequence = term");
-					struct termList t=*(yyvsp[0].list);
+					struct termList t =*(yyvsp[0].list);
 					puts(t.name);
 					(yyval.list)=&t;
 					}
@@ -1323,21 +1323,27 @@ yyreduce:
   case 14:
 #line 59 "logic.y" /* yacc.c:1646  */
     {puts("bison: termsequence = termsequence comma term");
+					
 					struct termList t=*(yyvsp[0].list);
 					t.list=(yyvsp[-2].list);
+					puts("normal:");
 					puts(t.name);
-					puts(t.list->name);					
+					puts(t.list->name);							
+					
 					struct termList copy;
 					copy.name=strdup(t.name);
 					copy.list=t.list;
+					puts("copy:");
+					puts(copy.name);
+					puts(copy.list->name);	
 					(yyval.list)=&copy;
-					printTermsequence(copy);
+					//printTermsequence(copy);
 		}
-#line 1337 "logic.tab.c" /* yacc.c:1646  */
+#line 1343 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 71 "logic.y" /* yacc.c:1646  */
+#line 77 "logic.y" /* yacc.c:1646  */
     {puts("term = variable:");
 					struct termList t;
 					t.name=strdup((yyvsp[0].name));
@@ -1345,11 +1351,11 @@ yyreduce:
 					t.list=NULL;
 					(yyval.list)=&t;
 					}
-#line 1349 "logic.tab.c" /* yacc.c:1646  */
+#line 1355 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 78 "logic.y" /* yacc.c:1646  */
+#line 84 "logic.y" /* yacc.c:1646  */
     {puts("bison: term = function");  /*Constant, no paramter list*/
 					struct termList func;
 					func.name=(yyvsp[0].name);
@@ -1357,41 +1363,44 @@ yyreduce:
 					puts(func.name);
 					(yyval.list)=&func;
 					}
-#line 1361 "logic.tab.c" /* yacc.c:1646  */
+#line 1367 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 85 "logic.y" /* yacc.c:1646  */
+#line 91 "logic.y" /* yacc.c:1646  */
     {puts("bison: term = function(termsequence)");
 					struct termList func;
 					func.name=(yyvsp[-3].name);
 					puts(func.name);
 					func.list=(yyvsp[-1].list);
+					puts(func.list->name);
+					puts(func.list->name);
+					puts(func.list->name);
 					(yyval.list)=&func;
 		}
-#line 1373 "logic.tab.c" /* yacc.c:1646  */
+#line 1382 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 93 "logic.y" /* yacc.c:1646  */
+#line 102 "logic.y" /* yacc.c:1646  */
     {puts("bison: atom= predicate");}
-#line 1379 "logic.tab.c" /* yacc.c:1646  */
+#line 1388 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 94 "logic.y" /* yacc.c:1646  */
+#line 103 "logic.y" /* yacc.c:1646  */
     {puts("bison: atom = predicate(termsequence)");}
-#line 1385 "logic.tab.c" /* yacc.c:1646  */
+#line 1394 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 95 "logic.y" /* yacc.c:1646  */
+#line 104 "logic.y" /* yacc.c:1646  */
     {puts("bison: atom = term");}
-#line 1391 "logic.tab.c" /* yacc.c:1646  */
+#line 1400 "logic.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1395 "logic.tab.c" /* yacc.c:1646  */
+#line 1404 "logic.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1619,7 +1628,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 100 "logic.y" /* yacc.c:1906  */
+#line 109 "logic.y" /* yacc.c:1906  */
 
 
 int yyerror(char* err)
@@ -1632,6 +1641,16 @@ void printFormula(formula* f){
 	
 }
 
+void addToList(termList* head, termList* tail){
+	termList* pointer = head;
+	if (pointer->list==NULL) puts("null");
+	while(pointer->list!=NULL){
+		puts(pointer->name);
+		pointer=pointer->list;
+	}
+	pointer->list=tail;
+}
+
 void printTermsequence(termList tlist){
 	puts("terms:");
 	puts(tlist.name);
@@ -1642,6 +1661,7 @@ void printTermsequence(termList tlist){
 		tlist=*tlist.list;
 	}
 }
+
 
 int main (int argc, char* argv[])
 {

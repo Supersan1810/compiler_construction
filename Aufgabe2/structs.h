@@ -1,7 +1,7 @@
 
 typedef struct termList{
 	char* name; /*variable or function*/
-	struct termList *list;
+	struct termList* list;
 }termList;
 
 enum {atom,and,or,not,implication,equivalence,all,exist,top,bottom};
