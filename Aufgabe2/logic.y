@@ -8,14 +8,14 @@
    extern int yyerror(char* err);
    extern int yylex(void);
    
-	formula endformula;
+	formula endformula;  //jedes mal wenn etwas in eine Formel gespeichert wird überschreiben oder zusätzliches startsymbol
 	
 %}
 
 %union { /*for yylval*/
    char* name; /*strdup(yytext)*/
    struct formula* f;
-   struct term* t;
+   struct termList* list;
 }
 
 
@@ -51,17 +51,53 @@ formula:  atom{puts("bison: formula = atom");}
 		| formula IMPLICATION formula {puts("bison: formula = formula implication formula");}
 		| formula EQUIVALENCE formula {puts("bison: formula = formula equivalence formula");};
   
-termsequence: term {puts("bison: termsequence = term");}
-		| 	  termsequence COMMA term {puts("bison: termsequence = termsequence comma term");};
+termsequence: term {puts("bison: termsequence = term");
+					struct termList t =*$<list>1;
+					puts(t.name);
+					$<list>$=&t;
+					}
+			|termsequence COMMA term {puts("bison: termsequence = termsequence comma term");
+					
+					struct termList t=*$<list>3;
+					t.list=$<list>1;
+					puts("normal:");
+					puts(t.name);
+					puts(t.list->name);							
+					
+					struct termList copy;
+					copy.name=strdup(t.name);
+					copy.list=t.list;
+					puts("copy:");
+					puts(copy.name);
+					puts(copy.list->name);	
+					$<list>$=&copy;
+					//printTermsequence(copy);
+		};
 		
 term:     VARIABLE {puts("term = variable:");
-					puts($<name>1);
-					struct term t;
-					t.varFunc=$<name>1;
-					$<t>$=&t;
+					struct termList t;
+					t.name=strdup($<name>1);
+					puts(t.name);
+					t.list=NULL;
+					$<list>$=&t;
 					}
-		| FUNCTION {puts("bison: term = function");}
-		| FUNCTION OPENPAR termsequence CLOSEPAR {puts("bison: term = function(termsequence)");};
+		| FUNCTION {puts("bison: term = function");  /*Constant, no paramter list*/
+					struct termList func;
+					func.name=$<name>1;
+					func.list=NULL;
+					puts(func.name);
+					$<list>$=&func;
+					}
+		| FUNCTION OPENPAR termsequence CLOSEPAR {puts("bison: term = function(termsequence)");
+					struct termList func;
+					func.name=$<name>1;
+					puts(func.name);
+					func.list=$<list>3;
+					puts(func.list->name);
+					puts(func.list->name);
+					puts(func.list->name);
+					$<list>$=&func;
+		};
 		
 atom:     PREDICATE {puts("bison: atom= predicate");}
 		| PREDICATE OPENPAR termsequence CLOSEPAR {puts("bison: atom = predicate(termsequence)");}
@@ -78,6 +114,30 @@ int yyerror(char* err)
    return 0;
 }
 
+void printFormula(formula* f){
+	
+}
+
+void addToList(termList* head, termList* tail){
+	termList* pointer = head;
+	if (pointer->list==NULL) puts("null");
+	while(pointer->list!=NULL){
+		puts(pointer->name);
+		pointer=pointer->list;
+	}
+	pointer->list=tail;
+}
+
+void printTermsequence(termList tlist){
+	puts("terms:");
+	puts(tlist.name);
+	int a=0;
+	while((tlist.list!=NULL)&&(a<10)){
+		a++;
+		puts(tlist.list->name);
+		tlist=*tlist.list;
+	}
+}
 
 
 int main (int argc, char* argv[])

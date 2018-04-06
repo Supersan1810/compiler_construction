@@ -73,7 +73,7 @@ union YYSTYPE
  /*for yylval*/
    char* name; /*strdup(yytext)*/
    struct formula* f;
-   struct term* t;
+   struct termList* list;
 
 #line 79 "logic.tab.h" /* yacc.c:1909  */
 };

@@ -751,9 +751,9 @@ case 1:
 YY_RULE_SETUP
 #line 14 "input.l"
 {/* variable */
-   printf("lexer: variable: %s\n", yytext );
-   yylval.name=yytext;
-   return VARIABLE;
+		   printf("lexer: variable: %s\n", yytext );
+		   yylval.name=strdup(yytext);
+		   return VARIABLE;
             }
 	YY_BREAK
 case 2:
@@ -761,7 +761,7 @@ YY_RULE_SETUP
 #line 20 "input.l"
 {/* function name */
             printf("lexer: function name: %s\n",yytext );
-			yylval.name=yytext;
+			yylval.name=strdup(yytext);
 			return FUNCTION;
             }
 	YY_BREAK
@@ -770,7 +770,7 @@ YY_RULE_SETUP
 #line 26 "input.l"
 {/* predicate */
             printf("lexer: predicate: %s\n",yytext );
-			yylval.name=yytext;
+			yylval.name=strdup(yytext);
 			return PREDICATE;
             }
 	YY_BREAK
