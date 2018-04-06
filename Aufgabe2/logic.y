@@ -8,14 +8,16 @@
    extern int yyerror(char* err);
    extern int yylex(void);
    
-	formula endformula;  //jedes mal wenn etwas in eine Formel gespeichert wird überschreiben oder zusätzliches startsymbol
+	formula endformula;  /*jedes mal wenn etwas in eine Formel gespeichert wird überschreiben oder zusätzliches startsymbol*/
 	
 %}
 
+/*todo idee: alle kontruktoren durch (term*)malloc(sizeof(term)) ersetzen Dann mus man nicht mehr kopieren*/*/
+
 %union { /*for yylval*/
    char* name; /*strdup(yytext)*/
-   struct formula* f;
-   struct termList* list;
+   struct formula f;
+   struct termList list;
 }
 
 
@@ -39,7 +41,7 @@
 
 
 %%
-formula:  atom{puts("bison: formula = atom");}
+formula:  atom {puts("bison: formula = atom");}
 		| NOT formula {puts("bison: formula = not formula");}
 		| OPENPAR formula CLOSEPAR {puts("bison: formula = ( formula )");}
 		| TOP {puts("bison: formula = top");}
