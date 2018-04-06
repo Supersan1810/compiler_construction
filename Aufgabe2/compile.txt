@@ -4,3 +4,8 @@ gcc -c -o input.o input.c
 gcc -c -o logic.tab.o logic.tab.c
 gcc input.o logic.tab.o -o logic_check
 ./logic_check < f8.txt
+
+;oder: 
+
+make
+./logic_check < f8.txt
