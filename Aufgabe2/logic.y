@@ -4,13 +4,20 @@
 
 %{
    #include <stdio.h>
-
+   #include "structs.h"
    extern int yyerror(char* err);
    extern int yylex(void);
+   
+	formula endformula;  /*jedes mal wenn etwas in eine Formel gespeichert wird überschreiben oder zusätzliches startsymbol*/
+	
 %}
 
-%union {
-   char* var; /*strdup(yytext)*/
+/*todo idee: alle kontruktoren durch (term*)malloc(sizeof(term)) ersetzen Dann mus man nicht mehr kopieren*/
+
+%union { /*for yylval*/
+   char* name;
+   struct formula* f;
+   struct termList* list;
 }
 
 
@@ -22,7 +29,6 @@
 %token TOP
 %token BOTTOM
 %token VARIABLE
-
 %precedence EQUIVALENCE
 %precedence IMPLICATION
 %left  OR
@@ -35,25 +41,67 @@
 
 
 %%
-/* hier kommen die Regeln	*/
-formula:  atom{puts("bison: formula = atom");}
+formula:  atom {puts("bison: formula = atom");}
 		| NOT formula {puts("bison: formula = not formula");}
 		| OPENPAR formula CLOSEPAR {puts("bison: formula = ( formula )");}
 		| TOP {puts("bison: formula = top");}
 		| BOTTOM {puts("bison: formula = bottom");}
+		| ALL term formula {puts("bison: formula = all variable formula");}
+		| EXIST term formula {puts("bison: formula = exist variable formula");}
 		| formula AND formula {puts("bison: formula = formula and formula");}
 		| formula OR formula {puts("bison: formula = formula or formula");}
 		| formula IMPLICATION formula {puts("bison: formula = formula implication formula");}
-		| formula EQUIVALENCE formula {puts("bison: formula = formula implication formula");}
-		| ALL VARIABLE formula {puts("bison: formula = all variable formula");}
-		| EXIST VARIABLE formula {puts("bison: formula = exist variable formula");};
+		| formula EQUIVALENCE formula {puts("bison: formula = formula equivalence formula");};
   
-termsequence: term {puts("bison: termsequence = term");}
-		| 	  termsequence COMMA term {puts("bison: termsequence = termsequence comma term");};
+termsequence: term {puts("bison: termsequence = term");
+					struct termList* t =$<list>1;
+					puts(t->name);
+					$<list>$=t;
+					}
+			|termsequence COMMA term {puts("bison: termsequence = termsequence comma term");
+					
+					struct termList* t=$<list>3; /*first term that was read?*/
+					t->list=$<list>1;
+					puts("normal:");
+					puts(t->name);
+					puts((t->list)->name);							
+					
+					/* struct termList* copy=(termlist*)malloc(sizeof(termList)); 
+					copy->name=strdup(t.name);
+					copy.list=t.list;
+					puts("copy:");
+					puts(copy.name);
+					puts(copy.list->name);	
+					*/
+					
+					$<list>$=t; /* not sure*/
+					/*printTermsequence(copy);*/
+		};
 		
-term:     VARIABLE {puts("bison: term = variable");}
-		| FUNCTION {puts("bison: term = function");}
-		| FUNCTION OPENPAR termsequence CLOSEPAR {puts("bison: term = function(termsequence)");};
+term:     VARIABLE {puts("term = variable:");
+					struct termList* t=(termList*)malloc(sizeof(termList));
+					t->name=strdup($<name>1);
+					puts(t->name);
+					t->list=NULL;
+					$<list>$=t;
+					}
+		| FUNCTION {puts("bison: term = function");  /*Constant, no paramter list*/
+					struct termList* func=(termList*)malloc(sizeof(termList));
+					func->name=$<name>1;
+					func->list=NULL;
+					puts(func->name);
+					$<list>$=func;
+					}
+		| FUNCTION OPENPAR termsequence CLOSEPAR {puts("bison: term = function(termsequence)");
+					struct termList* func=(termList*)malloc(sizeof(termList));
+					func->name=$<name>1;
+					puts(func->name);
+					func->list=$<list>3;
+					puts((func->list)->name);
+					puts(((func->list)->list)->name);
+					puts(((func->list->list->list))->name);
+					$<list>$=func;
+		};
 		
 atom:     PREDICATE {puts("bison: atom= predicate");}
 		| PREDICATE OPENPAR termsequence CLOSEPAR {puts("bison: atom = predicate(termsequence)");}
@@ -70,9 +118,34 @@ int yyerror(char* err)
    return 0;
 }
 
+void printFormula(formula* f){
+	
+}
+
+void addToList(termList* head, termList* tail){
+	termList* pointer = head;
+	if (pointer->list==NULL) puts("null");
+	while(pointer->list!=NULL){
+		puts(pointer->name);
+		pointer=pointer->list;
+	}
+	pointer->list=tail;
+}
+
+void printTermsequence(termList tlist){
+	puts("terms:");
+	puts(tlist.name);
+	int a=0;
+	while((tlist.list!=NULL)&&(a<10)){
+		a++;
+		puts(tlist.list->name);
+		tlist=*tlist.list;
+	}
+}
 
 int main (int argc, char* argv[])
 {
+	
   puts("bison: Starting");
   return yyparse();
   puts("bison: Ending");
