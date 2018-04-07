@@ -3,12 +3,12 @@ YACC = bison
 CC   = gcc
 LD   = gcc
 
-all: logic
+all: logic_check
 
 
-input.c: input.l lex.tab.
+input.c: input.l logic.tab.h
 
-input.tab.h: logic.y
+logic.tab.h: logic.y
 	$(YACC) -d logic.y
 
 logic.tab.c: logic.y
