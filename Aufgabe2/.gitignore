@@ -1,0 +1,8 @@
+*
+!Makefile
+!*.l
+!*.y
+!structs.h
+!f*.txt
+!compile.txt
+!.gitignore
