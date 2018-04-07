@@ -12,12 +12,12 @@
 	
 %}
 
-/*todo idee: alle kontruktoren durch (term*)malloc(sizeof(term)) ersetzen Dann mus man nicht mehr kopieren*/*/
+/*todo idee: alle kontruktoren durch (term*)malloc(sizeof(term)) ersetzen Dann mus man nicht mehr kopieren*/
 
 %union { /*for yylval*/
-   char* name; /*strdup(yytext)*/
-   struct formula f;
-   struct termList list;
+   char* name;
+   struct formula* f;
+   struct termList* list;
 }
 
 
@@ -54,51 +54,53 @@ formula:  atom {puts("bison: formula = atom");}
 		| formula EQUIVALENCE formula {puts("bison: formula = formula equivalence formula");};
   
 termsequence: term {puts("bison: termsequence = term");
-					struct termList t =*$<list>1;
-					puts(t.name);
-					$<list>$=&t;
+					struct termList* t =$<list>1;
+					puts(t->name);
+					$<list>$=t;
 					}
 			|termsequence COMMA term {puts("bison: termsequence = termsequence comma term");
 					
-					struct termList t=*$<list>3;
-					t.list=$<list>1;
+					struct termList* t=$<list>3; /*first term that was read?*/
+					t->list=$<list>1;
 					puts("normal:");
-					puts(t.name);
-					puts(t.list->name);							
+					puts(t->name);
+					puts((t->list)->name);							
 					
-					struct termList copy;
-					copy.name=strdup(t.name);
+					/* struct termList* copy=(termlist*)malloc(sizeof(termList)); 
+					copy->name=strdup(t.name);
 					copy.list=t.list;
 					puts("copy:");
 					puts(copy.name);
 					puts(copy.list->name);	
-					$<list>$=&copy;
-					//printTermsequence(copy);
+					*/
+					
+					$<list>$=t; /* not sure*/
+					/*printTermsequence(copy);*/
 		};
 		
 term:     VARIABLE {puts("term = variable:");
-					struct termList t;
-					t.name=strdup($<name>1);
-					puts(t.name);
-					t.list=NULL;
-					$<list>$=&t;
+					struct termList* t=(termList*)malloc(sizeof(termList));
+					t->name=strdup($<name>1);
+					puts(t->name);
+					t->list=NULL;
+					$<list>$=t;
 					}
 		| FUNCTION {puts("bison: term = function");  /*Constant, no paramter list*/
-					struct termList func;
-					func.name=$<name>1;
-					func.list=NULL;
-					puts(func.name);
-					$<list>$=&func;
+					struct termList* func=(termList*)malloc(sizeof(termList));
+					func->name=$<name>1;
+					func->list=NULL;
+					puts(func->name);
+					$<list>$=func;
 					}
 		| FUNCTION OPENPAR termsequence CLOSEPAR {puts("bison: term = function(termsequence)");
-					struct termList func;
-					func.name=$<name>1;
-					puts(func.name);
-					func.list=$<list>3;
-					puts(func.list->name);
-					puts(func.list->name);
-					puts(func.list->name);
-					$<list>$=&func;
+					struct termList* func=(termList*)malloc(sizeof(termList));
+					func->name=$<name>1;
+					puts(func->name);
+					func->list=$<list>3;
+					puts((func->list)->name);
+					puts(((func->list)->list)->name);
+					puts(((func->list->list->list))->name);
+					$<list>$=func;
 		};
 		
 atom:     PREDICATE {puts("bison: atom= predicate");}
@@ -140,7 +142,6 @@ void printTermsequence(termList tlist){
 		tlist=*tlist.list;
 	}
 }
-
 
 int main (int argc, char* argv[])
 {

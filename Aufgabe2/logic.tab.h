@@ -69,9 +69,9 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 15 "logic.y" /* yacc.c:1909  */
+#line 17 "logic.y" /* yacc.c:1909  */
  /*for yylval*/
-   char* name; /*strdup(yytext)*/
+   char* name;
    struct formula* f;
    struct termList* list;
 
