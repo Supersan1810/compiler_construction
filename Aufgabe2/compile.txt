@@ -1,0 +1,3 @@
+cd  /cygdrive/e/Mensch42/Documents/Wichtig/Aktuell/Studium/Theorie/Semester/Semester4/Compilerbau_Hladik/compiler_construction_repo/Aufgabe2
+make
+./logic_check <f8.txt
