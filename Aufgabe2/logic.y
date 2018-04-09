@@ -25,8 +25,6 @@
 	
 %}
 
-/*todo idee: alle kontruktoren durch (term*)malloc(sizeof(term)) ersetzen Dann mus man nicht mehr kopieren*/
-
 %union { /*for yylval*/
    char* name;
    struct formula* f;
@@ -290,6 +288,8 @@ char* termsequenceToStr(termSequence* tlist){
 	
 	return result;
 }
+
+
 
 void debugPrintTermsequence(termSequence* tlist){
 	puts("bison: termSequence:");
