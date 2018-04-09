@@ -4,5 +4,5 @@
 !*.y
 !structs.h
 !f*.txt
-!compile.txt
+!compile.*
 !.gitignore
