@@ -69,7 +69,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 28 "logic.y" /* yacc.c:1909  */
+#line 29 "logic.y" /* yacc.c:1909  */
  /*for yylval*/
    char* name;
    struct formula* f;

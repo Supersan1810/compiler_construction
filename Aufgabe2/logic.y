@@ -7,6 +7,7 @@
 	#include <stdlib.h>
 	#include <string.h>
 	#include "structs.h"
+	//#define DEBUG
 	
 	extern int yyerror(char* err);
 	extern int yylex(void);
@@ -52,143 +53,188 @@
 
 
 %%
-result: formula {
-					puts("bison: Reached End. Formula tree:");
+result: formula {	
+					#ifdef DEBUG
+						puts("bison: Reached End. Formula tree:");
+					#endif
 					result=$<f>1;
 					printFormula(result,0);
 };
 
 formula:  atom {
-					puts("bison: formula = atom");
-					puts($<f>1->name);
 					$<f>$=$<f>1;
+					#ifdef DEBUG
+						puts("bison: formula = atom");
+						puts($<f>1->name);
+					#endif
 					}
 		| NOT formula {
-					puts("bison: formula = not formula");
 					formula* f=createFormula(E_NOT,strdup("NOT"));
 					f->leftFormula=$<f>2;
 					$<f>$=f;
-					puts(f->name);
+					#ifdef DEBUG
+						puts("bison: formula = not formula");
+						puts(f->name);
+					#endif
 					}
 		| OPENPAR formula CLOSEPAR {
-					puts("bison: formula = ( formula )");
-					$<f>$=$<f>1;		
+					$<f>$=$<f>1;	
+					#ifdef DEBUG
+						puts("bison: formula = ( formula )");	
+					#endif
 			}
 		| TOP {
-					puts("bison: formula = top");
 					formula* f=createFormula(E_TOP,strdup("TOP"));
 					$<f>$=f;
-					puts(f->name);
+					#ifdef DEBUG
+						puts("bison: formula = top");
+						puts(f->name);
+					#endif
 			}
 		| BOTTOM {
-					puts("bison: formula = bottom");
 					formula* f=createFormula(E_BOTTOM,strdup("BOTTOM"));
 					$<f>$=f;
-					puts(f->name);
+					#ifdef DEBUG
+						puts("bison: formula = bottom");
+						puts(f->name);
+					#endif
 			}
 		| ALL term formula {
-					puts("bison: formula = all variable formula");
 					formula* f=createFormula(E_ALL,strdup("ALL"));
 					f->list=$<list>2;
 					f->leftFormula=$<f>3;
 					$<f>$=f;
-					puts(f->name);
+					#ifdef DEBUG
+						puts("bison: formula = all variable formula");
+						puts(f->name);
+					#endif
 					}
 		| EXIST term formula {
-					puts("bison: formula = exist variable formula");
 					formula* f=createFormula(E_EXIST,strdup("EXIST"));
 					f->list=$<list>2;
 					f->leftFormula=$<f>3;
 					$<f>$=f;
-					puts(f->name);
+					#ifdef DEBUG
+						puts("bison: formula = exist variable formula");
+						puts(f->name);
+					#endif
 					}
 		| formula AND formula {
-					puts("bison: formula = formula and formula");
 					formula* f=createFormula(E_AND,strdup("AND"));
 					f->leftFormula=$<f>1;
 					f->rightFormula=$<f>3;
 					$<f>$=f;
-					puts(f->name);
+					#ifdef DEBUG
+						puts("bison: formula = formula and formula");
+						puts(f->name);
+					#endif
 					}
 		| formula OR formula {
-					puts("bison: formula = formula or formula");
 					formula* f=createFormula(E_OR,strdup("OR"));
 					f->leftFormula=$<f>1;
 					f->rightFormula=$<f>3;
 					$<f>$=f;
-					puts(f->name);
+					#ifdef DEBUG
+						puts("bison: formula = formula or formula");
+						puts(f->name);
+					#endif
 					}
 		| formula IMPLICATION formula {
-					puts("bison: formula = formula implication formula");
 					formula* f=createFormula(E_IMPLICATION,strdup("IMPLICATION"));
 					f->leftFormula=$<f>1;
 					f->rightFormula=$<f>3;
 					$<f>$=f;
-					puts(f->name);
+					#ifdef DEBUG
+						puts("bison: formula = formula implication formula");
+						puts(f->name);
+					#endif
 					}
 		| formula EQUIVALENCE formula {
-					puts("bison: formula = formula equivalence formula");
 					formula* f=createFormula(E_EQUIVALENCE,strdup("EQUIVALENCE"));
 					f->leftFormula=$<f>1;
 					f->rightFormula=$<f>3;
 					$<f>$=f;
-					puts(f->name);
+					#ifdef DEBUG
+						puts(f->name);
+						puts("bison: formula = formula equivalence formula");
+					#endif
 					};
   
-termsequence: term {puts("bison: termsequence = term");
+termsequence: term {
 					struct termSequence* t =$<list>1;
-					puts(t->name);
 					$<list>$=t;
+					#ifdef DEBUG
+						puts("bison: termsequence = term");
+						puts(t->name);
+					#endif
 					}
-			|termsequence COMMA term {puts("bison: termsequence = termsequence comma term");
+			|termsequence COMMA term {
 					struct termSequence* t=$<list>1;
 					addToList(t,$<list>3); /*x->y */						
 					$<list>$=t;
-					debugPrintTermsequence(t);
+					#ifdef DEBUG
+						puts("bison: termsequence = termsequence comma term");
+						debugPrintTermsequence(t);
+					#endif
 		};
 		
-term:     VARIABLE {puts("term = variable:");
+term:     VARIABLE {
 					struct termSequence* t=(termSequence*)malloc(sizeof(termSequence));
 					t->name=$<name>1;
-					puts(t->name);
 					t->list=NULL;
 					$<list>$=t;
+					#ifdef DEBUG
+						puts("term = variable:");
+						puts(t->name);
+					#endif
 					}
-		| FUNCTION {puts("bison: term = function");  /*Constant, no paramter list*/
+		| FUNCTION {
 					struct termSequence* func=(termSequence*)malloc(sizeof(termSequence));
 					func->name=$<name>1;
 					func->list=NULL;
-					puts(func->name);
 					$<list>$=func;
+					#ifdef DEBUG
+						puts("bison: term = function");  /*Constant, no paramter list*/
+						puts(func->name);
+					#endif
 					}
-		| FUNCTION OPENPAR termsequence CLOSEPAR {puts("bison: term = function(termsequence)");
+		| FUNCTION OPENPAR termsequence CLOSEPAR {
 					struct termSequence* func=(termSequence*)malloc(sizeof(termSequence));
 					func->name=$<name>1;
-					puts(func->name);
 					func->list=$<list>3;
-					debugPrintTermsequence(func->list);
 					$<list>$=func;
+					#ifdef DEBUG
+						puts("bison: term = function(termsequence)");
+						puts(func->name);
+						debugPrintTermsequence(func->list);
+					#endif
 		};
 		
 atom:     PREDICATE {
-					puts("bison: atom= predicate");
 					struct formula* atom=createFormula(E_ATOM,$<name>1);
 					$<f>$=atom;
-					puts(atom->name);
+					#ifdef DEBUG
+						puts("bison: atom= predicate");
+						puts(atom->name);
+					#endif
 					}
 		| PREDICATE OPENPAR termsequence CLOSEPAR {
-					puts("bison: atom = predicate(termsequence)");
 					struct formula* atom=createFormula(E_ATOM,$<name>1);
 					atom->list=$<list>3;
 					$<f>$=atom;	
-					puts(atom->name);
+					#ifdef DEBUG
+						puts("bison: atom = predicate(termsequence)");
+						puts(atom->name);
+					#endif
 					}
 		| term {
-					puts("bison: atom = term");
 					struct formula* atom=createFormula(E_ATOM,$<list>1->name);
 					atom->list=$<list>1->list; /* required if term = function(termSequence)*/
 					$<f>$=atom;	
-					puts(atom->name);
+					#ifdef DEBUG
+						puts("bison: atom = term");
+						puts(atom->name);
+					#endif
 					};
 %%
 
@@ -310,6 +356,8 @@ formula* createFormula(fType t,char* name)
 
 int main (int argc, char* argv[])
 {
-  puts("bison: Starting");
-  return yyparse();
+	#ifdef DEBUG
+		puts("bison: Starting");
+	#endif
+	return yyparse();
 }

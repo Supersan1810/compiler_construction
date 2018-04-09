@@ -13,3 +13,4 @@ typedef struct formula{
 	struct formula *leftFormula;
 	struct formula *rightFormula;
 }formula;
+
