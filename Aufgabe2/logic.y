@@ -4,11 +4,16 @@
 
 %{
 	#include <stdio.h>
+	#include <stdlib.h>
+	#include <string.h>
 	#include "structs.h"
+	
 	extern int yyerror(char* err);
 	extern int yylex(void);
-	extern char* strdup(char*);
+	/*extern char* strdup(char*);
 	extern char* strcat(char*, char*);
+	extern int strcmp(char*,char*);
+	extern int strcpy(char*,char*);*/
 	void addToList(termSequence* head, termSequence* tail);
 	void debugPrintTermsequence(termSequence* tlist);
 	void printFormula(formula* f,int indent);
@@ -50,19 +55,20 @@
 
 %%
 result: formula {
-					puts("bison: Reached End");
+					puts("bison: Reached End. Formula tree:");
 					result=$<f>1;
 					printFormula(result,0);
 };
 
 formula:  atom {
 					puts("bison: formula = atom");
+					puts($<f>1->name);
 					$<f>$=$<f>1;
 					}
 		| NOT formula {
 					puts("bison: formula = not formula");
 					formula* f=createFormula(E_NOT,strdup("NOT"));
-					f->leftFormula=$<f>1;
+					f->leftFormula=$<f>2;
 					$<f>$=f;
 					puts(f->name);
 					}
@@ -85,7 +91,7 @@ formula:  atom {
 		| ALL term formula {
 					puts("bison: formula = all variable formula");
 					formula* f=createFormula(E_ALL,strdup("ALL"));
-					f->list=$<list>1;
+					f->list=$<list>2;
 					f->leftFormula=$<f>3;
 					$<f>$=f;
 					puts(f->name);
@@ -93,7 +99,7 @@ formula:  atom {
 		| EXIST term formula {
 					puts("bison: formula = exist variable formula");
 					formula* f=createFormula(E_EXIST,strdup("EXIST"));
-					f->list=$<list>1;
+					f->list=$<list>2;
 					f->leftFormula=$<f>3;
 					$<f>$=f;
 					puts(f->name);
@@ -137,7 +143,7 @@ termsequence: term {puts("bison: termsequence = term");
 					$<list>$=t;
 					}
 			|termsequence COMMA term {puts("bison: termsequence = termsequence comma term");
-					struct termSequence* t=$<list>1; /*first term that was read?*/
+					struct termSequence* t=$<list>1;
 					addToList(t,$<list>3); /*x->y */						
 					$<list>$=t;
 					debugPrintTermsequence(t);
@@ -182,6 +188,7 @@ atom:     PREDICATE {
 		| term {
 					puts("bison: atom = term");
 					struct formula* atom=createFormula(E_ATOM,$<list>1->name);
+					atom->list=$<list>1->list; /* required if term = function(termSequence)*/
 					$<f>$=atom;	
 					puts(atom->name);
 					};
@@ -201,8 +208,9 @@ void printFormula(formula* f,int indent){
 		
 		switch(f->type){
 			case E_ATOM:
-				if(f->list!=NULL)
-					printf("%s ts: %s\n",indentStr(indent),termsequenceToStr(f->list));
+				if((f->list)!=NULL){
+					printf("%s%s\n",indentStr(indent),termsequenceToStr(f->list));
+				}
 				break;
 			case E_AND:
 				printFormula(f->leftFormula,indent);
@@ -245,13 +253,14 @@ void printFormula(formula* f,int indent){
 
 char* indentStr(int n)
 {
-	char* result="";
+	char* result=(char*)malloc(n*strlen("  "));
+	strcpy(result,"");
 	
 	for (int i=0;i<n;i++)
 	{
-		result=strcat(result,"\t");
+		strcat(result,"  ");
 	}
-	return strdup(result);
+	return result;
 }
 
 void addToList(termSequence* head, termSequence* tail){
@@ -264,13 +273,22 @@ void addToList(termSequence* head, termSequence* tail){
 }
 
 char* termsequenceToStr(termSequence* tlist){
-	char* result="";
+	char* result=NULL;
+	
 	while(tlist!=NULL){
-		if(result!="") result=strcat(strcat(result,","),strdup(tlist->name));
-		else result=tlist->name;
+		if(result!=NULL) {
+			realloc(result,strlen(result)+strlen(",")+strlen(tlist->name));
+			strcat(result,",");
+			strcat(result,tlist->name);
+		}
+		else {
+			result=(char*)malloc(strlen(tlist->name));
+			strcpy(result,tlist->name);
+		}
 		tlist=tlist->list;
 	}
-	return strdup(result);
+	
+	return result;
 }
 
 void debugPrintTermsequence(termSequence* tlist){
@@ -291,7 +309,6 @@ formula* createFormula(fType t,char* name)
 
 int main (int argc, char* argv[])
 {
-	
   puts("bison: Starting");
   return yyparse();
 }
