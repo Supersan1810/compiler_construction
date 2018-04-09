@@ -18,7 +18,7 @@
 	void debugPrintTermsequence(termSequence* tlist);
 	void printFormula(formula* f,int indent);
 	formula* createFormula(fType t,char* name);
-	char* termsequenceToStr(termSequence* tlist);
+	char* termsequenceToStr(termSequence* tlist, int indent);
 	char* indentStr(int n);
    
 	formula* result; 
@@ -207,7 +207,7 @@ void printFormula(formula* f,int indent){
 		switch(f->type){
 			case E_ATOM:
 				if((f->list)!=NULL){
-					printf("%s%s\n",indentStr(indent),termsequenceToStr(f->list));
+					printf("%s%s\n",indentStr(indent),termsequenceToStr(f->list,indent));
 				}
 				break;
 			case E_AND:
@@ -216,7 +216,7 @@ void printFormula(formula* f,int indent){
 				break;
 			case E_ALL:
 				if(f->list!=NULL)
-					printf("%s%s\n",indentStr(indent),termsequenceToStr(f->list));
+					printf("%s%s\n",indentStr(indent),termsequenceToStr(f->list,indent));
 				printFormula(f->leftFormula,indent);
 				printFormula(f->rightFormula,indent);
 				break;
@@ -228,7 +228,7 @@ void printFormula(formula* f,int indent){
 				break;
 			case E_EXIST:
 				if(f->list!=NULL)
-					printf("%s%s\n",indentStr(indent),termsequenceToStr(f->list));
+					printf("%s%s\n",indentStr(indent),termsequenceToStr(f->list,indent));
 				printFormula(f->leftFormula,indent);
 				printFormula(f->rightFormula,indent);
 				break;
@@ -270,13 +270,14 @@ void addToList(termSequence* head, termSequence* tail){
 	pointer->list=tail;
 }
 
-char* termsequenceToStr(termSequence* tlist){
+char* termsequenceToStr(termSequence* tlist, int indent){
 	char* result=NULL;
 	
 	while(tlist!=NULL){
 		if(result!=NULL) {
-			realloc(result,strlen(result)+strlen(",")+strlen(tlist->name));
-			strcat(result,",");
+			realloc(result,strlen(result)+strlen("\n")+strlen(tlist->name));
+			strcat(result,"\n");
+			strcat(result,indentStr(indent));
 			strcat(result,tlist->name);
 		}
 		else {
@@ -293,7 +294,7 @@ char* termsequenceToStr(termSequence* tlist){
 
 void debugPrintTermsequence(termSequence* tlist){
 	puts("bison: termSequence:");
-	puts(termsequenceToStr(tlist)); 
+	puts(termsequenceToStr(tlist,0)); 
 }
 
 formula* createFormula(fType t,char* name)

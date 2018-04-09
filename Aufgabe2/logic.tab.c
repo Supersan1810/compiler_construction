@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.0.4.  */
+/* A Bison parser, made by GNU Bison 3.0.2.  */
 
 /* Bison implementation for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "3.0.4"
+#define YYBISON_VERSION "3.0.2"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -79,7 +79,7 @@
 	void debugPrintTermsequence(termSequence* tlist);
 	void printFormula(formula* f,int indent);
 	formula* createFormula(fType t,char* name);
-	char* termsequenceToStr(termSequence* tlist);
+	char* termsequenceToStr(termSequence* tlist, int indent);
 	char* indentStr(int n);
    
 	formula* result; 
@@ -141,10 +141,10 @@ extern int yydebug;
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-
+typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 30 "logic.y" /* yacc.c:355  */
+#line 28 "logic.y" /* yacc.c:355  */
  /*for yylval*/
    char* name;
    struct formula* f;
@@ -152,8 +152,6 @@ union YYSTYPE
 
 #line 154 "logic.tab.c" /* yacc.c:355  */
 };
-
-typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
@@ -167,7 +165,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 171 "logic.tab.c" /* yacc.c:358  */
+#line 169 "logic.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -466,9 +464,9 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    57,    57,    63,    68,    75,    79,    85,    91,    99,
-     107,   115,   123,   131,   140,   145,   152,   159,   166,   175,
-     181,   188
+       0,    55,    55,    61,    66,    73,    77,    83,    89,    97,
+     105,   113,   121,   129,   138,   143,   150,   157,   164,   173,
+     179,   186
 };
 #endif
 
@@ -1258,27 +1256,27 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 57 "logic.y" /* yacc.c:1646  */
+#line 55 "logic.y" /* yacc.c:1646  */
     {
 					puts("bison: Reached End. Formula tree:");
 					result=(yyvsp[0].f);
 					printFormula(result,0);
 }
-#line 1268 "logic.tab.c" /* yacc.c:1646  */
+#line 1266 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 63 "logic.y" /* yacc.c:1646  */
+#line 61 "logic.y" /* yacc.c:1646  */
     {
 					puts("bison: formula = atom");
 					puts((yyvsp[0].f)->name);
 					(yyval.f)=(yyvsp[0].f);
 					}
-#line 1278 "logic.tab.c" /* yacc.c:1646  */
+#line 1276 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 68 "logic.y" /* yacc.c:1646  */
+#line 66 "logic.y" /* yacc.c:1646  */
     {
 					puts("bison: formula = not formula");
 					formula* f=createFormula(E_NOT,strdup("NOT"));
@@ -1286,42 +1284,42 @@ yyreduce:
 					(yyval.f)=f;
 					puts(f->name);
 					}
-#line 1290 "logic.tab.c" /* yacc.c:1646  */
+#line 1288 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 75 "logic.y" /* yacc.c:1646  */
+#line 73 "logic.y" /* yacc.c:1646  */
     {
 					puts("bison: formula = ( formula )");
 					(yyval.f)=(yyvsp[-2].f);		
 			}
-#line 1299 "logic.tab.c" /* yacc.c:1646  */
+#line 1297 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 79 "logic.y" /* yacc.c:1646  */
+#line 77 "logic.y" /* yacc.c:1646  */
     {
 					puts("bison: formula = top");
 					formula* f=createFormula(E_TOP,strdup("TOP"));
 					(yyval.f)=f;
 					puts(f->name);
 			}
-#line 1310 "logic.tab.c" /* yacc.c:1646  */
+#line 1308 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 85 "logic.y" /* yacc.c:1646  */
+#line 83 "logic.y" /* yacc.c:1646  */
     {
 					puts("bison: formula = bottom");
 					formula* f=createFormula(E_BOTTOM,strdup("BOTTOM"));
 					(yyval.f)=f;
 					puts(f->name);
 			}
-#line 1321 "logic.tab.c" /* yacc.c:1646  */
+#line 1319 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 91 "logic.y" /* yacc.c:1646  */
+#line 89 "logic.y" /* yacc.c:1646  */
     {
 					puts("bison: formula = all variable formula");
 					formula* f=createFormula(E_ALL,strdup("ALL"));
@@ -1330,11 +1328,11 @@ yyreduce:
 					(yyval.f)=f;
 					puts(f->name);
 					}
-#line 1334 "logic.tab.c" /* yacc.c:1646  */
+#line 1332 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 99 "logic.y" /* yacc.c:1646  */
+#line 97 "logic.y" /* yacc.c:1646  */
     {
 					puts("bison: formula = exist variable formula");
 					formula* f=createFormula(E_EXIST,strdup("EXIST"));
@@ -1343,11 +1341,11 @@ yyreduce:
 					(yyval.f)=f;
 					puts(f->name);
 					}
-#line 1347 "logic.tab.c" /* yacc.c:1646  */
+#line 1345 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 107 "logic.y" /* yacc.c:1646  */
+#line 105 "logic.y" /* yacc.c:1646  */
     {
 					puts("bison: formula = formula and formula");
 					formula* f=createFormula(E_AND,strdup("AND"));
@@ -1356,11 +1354,11 @@ yyreduce:
 					(yyval.f)=f;
 					puts(f->name);
 					}
-#line 1360 "logic.tab.c" /* yacc.c:1646  */
+#line 1358 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 115 "logic.y" /* yacc.c:1646  */
+#line 113 "logic.y" /* yacc.c:1646  */
     {
 					puts("bison: formula = formula or formula");
 					formula* f=createFormula(E_OR,strdup("OR"));
@@ -1369,11 +1367,11 @@ yyreduce:
 					(yyval.f)=f;
 					puts(f->name);
 					}
-#line 1373 "logic.tab.c" /* yacc.c:1646  */
+#line 1371 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 123 "logic.y" /* yacc.c:1646  */
+#line 121 "logic.y" /* yacc.c:1646  */
     {
 					puts("bison: formula = formula implication formula");
 					formula* f=createFormula(E_IMPLICATION,strdup("IMPLICATION"));
@@ -1382,11 +1380,11 @@ yyreduce:
 					(yyval.f)=f;
 					puts(f->name);
 					}
-#line 1386 "logic.tab.c" /* yacc.c:1646  */
+#line 1384 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 131 "logic.y" /* yacc.c:1646  */
+#line 129 "logic.y" /* yacc.c:1646  */
     {
 					puts("bison: formula = formula equivalence formula");
 					formula* f=createFormula(E_EQUIVALENCE,strdup("EQUIVALENCE"));
@@ -1395,32 +1393,32 @@ yyreduce:
 					(yyval.f)=f;
 					puts(f->name);
 					}
-#line 1399 "logic.tab.c" /* yacc.c:1646  */
+#line 1397 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 140 "logic.y" /* yacc.c:1646  */
+#line 138 "logic.y" /* yacc.c:1646  */
     {puts("bison: termsequence = term");
 					struct termSequence* t =(yyvsp[0].list);
 					puts(t->name);
 					(yyval.list)=t;
 					}
-#line 1409 "logic.tab.c" /* yacc.c:1646  */
+#line 1407 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 145 "logic.y" /* yacc.c:1646  */
+#line 143 "logic.y" /* yacc.c:1646  */
     {puts("bison: termsequence = termsequence comma term");
 					struct termSequence* t=(yyvsp[-2].list);
 					addToList(t,(yyvsp[0].list)); /*x->y */						
 					(yyval.list)=t;
 					debugPrintTermsequence(t);
 		}
-#line 1420 "logic.tab.c" /* yacc.c:1646  */
+#line 1418 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 152 "logic.y" /* yacc.c:1646  */
+#line 150 "logic.y" /* yacc.c:1646  */
     {puts("term = variable:");
 					struct termSequence* t=(termSequence*)malloc(sizeof(termSequence));
 					t->name=(yyvsp[0].name);
@@ -1428,11 +1426,11 @@ yyreduce:
 					t->list=NULL;
 					(yyval.list)=t;
 					}
-#line 1432 "logic.tab.c" /* yacc.c:1646  */
+#line 1430 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 159 "logic.y" /* yacc.c:1646  */
+#line 157 "logic.y" /* yacc.c:1646  */
     {puts("bison: term = function");  /*Constant, no paramter list*/
 					struct termSequence* func=(termSequence*)malloc(sizeof(termSequence));
 					func->name=(yyvsp[0].name);
@@ -1440,11 +1438,11 @@ yyreduce:
 					puts(func->name);
 					(yyval.list)=func;
 					}
-#line 1444 "logic.tab.c" /* yacc.c:1646  */
+#line 1442 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 166 "logic.y" /* yacc.c:1646  */
+#line 164 "logic.y" /* yacc.c:1646  */
     {puts("bison: term = function(termsequence)");
 					struct termSequence* func=(termSequence*)malloc(sizeof(termSequence));
 					func->name=(yyvsp[-3].name);
@@ -1453,22 +1451,22 @@ yyreduce:
 					debugPrintTermsequence(func->list);
 					(yyval.list)=func;
 		}
-#line 1457 "logic.tab.c" /* yacc.c:1646  */
+#line 1455 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 175 "logic.y" /* yacc.c:1646  */
+#line 173 "logic.y" /* yacc.c:1646  */
     {
 					puts("bison: atom= predicate");
 					struct formula* atom=createFormula(E_ATOM,(yyvsp[0].name));
 					(yyval.f)=atom;
 					puts(atom->name);
 					}
-#line 1468 "logic.tab.c" /* yacc.c:1646  */
+#line 1466 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 181 "logic.y" /* yacc.c:1646  */
+#line 179 "logic.y" /* yacc.c:1646  */
     {
 					puts("bison: atom = predicate(termsequence)");
 					struct formula* atom=createFormula(E_ATOM,(yyvsp[-3].name));
@@ -1476,11 +1474,11 @@ yyreduce:
 					(yyval.f)=atom;	
 					puts(atom->name);
 					}
-#line 1480 "logic.tab.c" /* yacc.c:1646  */
+#line 1478 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 188 "logic.y" /* yacc.c:1646  */
+#line 186 "logic.y" /* yacc.c:1646  */
     {
 					puts("bison: atom = term");
 					struct formula* atom=createFormula(E_ATOM,(yyvsp[0].list)->name);
@@ -1488,11 +1486,11 @@ yyreduce:
 					(yyval.f)=atom;	
 					puts(atom->name);
 					}
-#line 1492 "logic.tab.c" /* yacc.c:1646  */
+#line 1490 "logic.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1496 "logic.tab.c" /* yacc.c:1646  */
+#line 1494 "logic.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1720,7 +1718,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 195 "logic.y" /* yacc.c:1906  */
+#line 193 "logic.y" /* yacc.c:1906  */
 
 
 int yyerror(char* err)
@@ -1738,7 +1736,7 @@ void printFormula(formula* f,int indent){
 		switch(f->type){
 			case E_ATOM:
 				if((f->list)!=NULL){
-					printf("%s%s\n",indentStr(indent),termsequenceToStr(f->list));
+					printf("%s%s\n",indentStr(indent),termsequenceToStr(f->list,indent));
 				}
 				break;
 			case E_AND:
@@ -1747,7 +1745,7 @@ void printFormula(formula* f,int indent){
 				break;
 			case E_ALL:
 				if(f->list!=NULL)
-					printf("%s%s\n",indentStr(indent),termsequenceToStr(f->list));
+					printf("%s%s\n",indentStr(indent),termsequenceToStr(f->list,indent));
 				printFormula(f->leftFormula,indent);
 				printFormula(f->rightFormula,indent);
 				break;
@@ -1759,7 +1757,7 @@ void printFormula(formula* f,int indent){
 				break;
 			case E_EXIST:
 				if(f->list!=NULL)
-					printf("%s%s\n",indentStr(indent),termsequenceToStr(f->list));
+					printf("%s%s\n",indentStr(indent),termsequenceToStr(f->list,indent));
 				printFormula(f->leftFormula,indent);
 				printFormula(f->rightFormula,indent);
 				break;
@@ -1801,13 +1799,14 @@ void addToList(termSequence* head, termSequence* tail){
 	pointer->list=tail;
 }
 
-char* termsequenceToStr(termSequence* tlist){
+char* termsequenceToStr(termSequence* tlist, int indent){
 	char* result=NULL;
 	
 	while(tlist!=NULL){
 		if(result!=NULL) {
-			realloc(result,strlen(result)+strlen(",")+strlen(tlist->name));
-			strcat(result,",");
+			realloc(result,strlen(result)+strlen("\n")+strlen(tlist->name));
+			strcat(result,"\n");
+			strcat(result,indentStr(indent));
 			strcat(result,tlist->name);
 		}
 		else {
@@ -1820,9 +1819,11 @@ char* termsequenceToStr(termSequence* tlist){
 	return result;
 }
 
+
+
 void debugPrintTermsequence(termSequence* tlist){
 	puts("bison: termSequence:");
-	puts(termsequenceToStr(tlist)); 
+	puts(termsequenceToStr(tlist,0)); 
 }
 
 formula* createFormula(fType t,char* name)
