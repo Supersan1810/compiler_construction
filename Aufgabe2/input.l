@@ -76,11 +76,16 @@ bottom   {/* bottom */
 \( {/*open parenthesis*/
 	printf("lexer: parenthesis: %s\n",yytext);
 	return OPENPAR;
-}	
+	}	
+	
 \) {/*close parenthesis*/
 	printf("lexer: parenthesis: %s\n",yytext);
 	return CLOSEPAR;
-}		
+	}		
+	
+\(\) { /*empty parentheses*/
+	}
+
 \, {/*comma*/
 	printf("lexer: comma: %s\n", yytext);
 	return COMMA;
