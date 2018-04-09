@@ -7,7 +7,7 @@
 	#include <stdlib.h>
 	#include <string.h>
 	#include "structs.h"
-	//#define DEBUG
+	#define DEBUG
 	
 	extern int yyerror(char* err);
 	extern int yylex(void);
@@ -20,6 +20,7 @@
 	void printFormula(formula* f,int indent);
 	formula* createFormula(fType t,char* name);
 	char* termsequenceToStr(termSequence* tlist, int indent);
+	char* argssequenceToStr(termSequence* tlist, int indent);
 	char* indentStr(int n);
    
 	formula* result; 
@@ -182,6 +183,7 @@ term:     VARIABLE {
 					struct termSequence* t=(termSequence*)malloc(sizeof(termSequence));
 					t->name=$<name>1;
 					t->list=NULL;
+					t->args=NULL;
 					$<list>$=t;
 					#ifdef DEBUG
 						puts("term = variable:");
@@ -192,6 +194,7 @@ term:     VARIABLE {
 					struct termSequence* func=(termSequence*)malloc(sizeof(termSequence));
 					func->name=$<name>1;
 					func->list=NULL;
+					func->args=NULL;
 					$<list>$=func;
 					#ifdef DEBUG
 						puts("bison: term = function");  /*Constant, no paramter list*/
@@ -201,12 +204,13 @@ term:     VARIABLE {
 		| FUNCTION OPENPAR termsequence CLOSEPAR {
 					struct termSequence* func=(termSequence*)malloc(sizeof(termSequence));
 					func->name=$<name>1;
-					func->list=$<list>3;
+					func->args=$<list>3;
+					func->list=NULL;
 					$<list>$=func;
 					#ifdef DEBUG
 						puts("bison: term = function(termsequence)");
 						puts(func->name);
-						debugPrintTermsequence(func->list);
+						debugPrintTermsequence(func->args);
 					#endif
 		};
 		
@@ -225,11 +229,12 @@ atom:     PREDICATE {
 					#ifdef DEBUG
 						puts("bison: atom = predicate(termsequence)");
 						puts(atom->name);
+						puts(termsequenceToStr(atom->list,1));
 					#endif
 					}
 		| term {
 					struct formula* atom=createFormula(E_ATOM,$<list>1->name);
-					atom->list=$<list>1->list; /* required if term = function(termSequence)*/
+					atom->list=$<list>1->args; /* required if term = function(termSequence) TODO args???*/
 					$<f>$=atom;	
 					#ifdef DEBUG
 						puts("bison: atom = term");
@@ -316,12 +321,12 @@ void addToList(termSequence* head, termSequence* tail){
 	pointer->list=tail;
 }
 
-char* termsequenceToStr(termSequence* tlist, int indent){
+char* termsequenceToStr(termSequence* tlist, int indent){ //char* return result
 	char* result=NULL;
 	
 	while(tlist!=NULL){
 		if(result!=NULL) {
-			realloc(result,strlen(result)+strlen("\n")+strlen(tlist->name));
+			realloc(result,strlen(result)+strlen("\n")+strlen(indentStr(indent))+strlen(tlist->name));
 			strcat(result,"\n");
 			strcat(result,indentStr(indent));
 			strcat(result,tlist->name);
@@ -330,16 +335,22 @@ char* termsequenceToStr(termSequence* tlist, int indent){
 			result=(char*)malloc(strlen(tlist->name));
 			strcpy(result,tlist->name);
 		}
+		if (tlist->args!=NULL){
+			char* arguments=strdup(termsequenceToStr(tlist->args, indent+1));
+			result=realloc(result,strlen(result)+strlen("\n")+strlen(indentStr(indent+1))+strlen(arguments));
+			strcat(result,"\n");
+			strcat(result,indentStr(indent+1));
+			strcat(result,strdup(arguments));
+		}
 		tlist=tlist->list;
 	}
-	
+	//hier Fehler bei result
 	return result;
 }
 
 
-
 void debugPrintTermsequence(termSequence* tlist){
-	puts("bison: termSequence:");
+	puts("termSequence:");
 	puts(termsequenceToStr(tlist,0)); 
 }
 
