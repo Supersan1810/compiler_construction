@@ -7,16 +7,18 @@
 	#include <stdlib.h>
 	#include <string.h>
 	#include "structs.h"
-	#define DEBUG
+	//#define DEBUG
 	
 	extern int yyerror(char* err);
 	extern int yylex(void);
+	extern FILE* yyin;
 	void addToList(termSequence* head, termSequence* tail);
 	void debugPrintTermsequence(termSequence* tlist);
 	void printFormula(formula* f,int indent);
 	formula* createFormula(fType t,char* name);
 	char* indentStr(int n);
 	void printTermSequence(termSequence* tlist, int indent);
+	void copyFormula(formula* target, formula* source);
    
 	formula* result; 
 	
@@ -229,7 +231,7 @@ atom:     PREDICATE {
 					}
 		| term {
 					struct formula* atom=createFormula(E_ATOM,$<list>1->name);
-					atom->list=$<list>1->args; /* required if term = function(termSequence) TODO args???*/
+					atom->list=$<list>1->args; /* required if term = function(termSequence)*/
 					$<f>$=atom;	
 					#ifdef DEBUG
 						puts("bison: atom = term");
@@ -344,10 +346,134 @@ formula* createFormula(fType t,char* name)
 	return(f);
 }
 
+void normalizeStep1(formula* f){
+	if (f!=NULL){
+		normalizeStep1(f->leftFormula);
+		normalizeStep1(f->rightFormula);
+		switch (f->type){
+			case E_EQUIVALENCE:
+				f->type=E_OR;
+				f->name=strdup("OR");
+				formula* tmpLeft = f->leftFormula;
+				formula* tmpRight = f->rightFormula;
+				
+				f->leftFormula=createFormula(E_AND,strdup("AND"));
+				f->rightFormula=createFormula(E_AND,strdup("AND"));
+				
+				f->leftFormula->leftFormula=tmpLeft;
+				f->leftFormula->rightFormula=tmpRight;
+				
+				f->rightFormula->leftFormula=createFormula(E_NOT, strdup("NOT"));
+				f->rightFormula->leftFormula->leftFormula=tmpLeft;
+				f->rightFormula->rightFormula=createFormula(E_NOT, strdup("NOT"));
+				f->rightFormula->rightFormula->leftFormula=tmpRight;
+	
+				break;
+			case E_IMPLICATION:
+				f->type=E_OR;
+				f->name=strdup("OR");
+				formula* tmp= f->leftFormula;
+				f->leftFormula=createFormula(E_NOT,strdup("NOT"));
+				f->leftFormula->leftFormula=tmp;
+				break;
+		}
+	}
+}
+
+int normalizeStep2(formula* f){
+	int count=0;
+	if (f!=NULL){
+		count+=normalizeStep2(f->leftFormula);
+		count+=normalizeStep2(f->rightFormula);
+		if (f->type==E_NOT){
+			formula* tmpLeft = f->leftFormula->leftFormula;
+			formula* tmpRight = f->leftFormula->rightFormula;
+			
+			switch(f->leftFormula->type){
+				case E_AND: //Case ~(x AND y) to ~x OR ~ y
+					count++;
+					f->type=E_OR;
+					f->name=strdup("OR");
+					f->leftFormula=createFormula(E_NOT,strdup("NOT"));
+					f->leftFormula->leftFormula=tmpLeft;
+					
+					f->rightFormula=createFormula(E_NOT,strdup("NOT"));
+					f->rightFormula->leftFormula=tmpRight;
+					break;
+				case E_OR: //Case ~(x OR y) to ~x AND ~ y
+					count++;
+					f->type=E_AND;
+					f->name=strdup("AND");
+					
+					f->leftFormula=createFormula(E_NOT,strdup("NOT"));
+					f->leftFormula->leftFormula=tmpLeft;
+					
+					f->rightFormula=createFormula(E_NOT,strdup("NOT"));
+					f->rightFormula->leftFormula=tmpRight;
+					break;
+				case E_ALL: //Case ~all x y to ex x ~y
+					count++;
+					f->type=E_EXIST;
+					f->name=strdup("EXIST");
+					f->list=f->leftFormula->list;
+					f->leftFormula->list=NULL;
+					f->leftFormula->type=E_NOT;
+					f->leftFormula->name=strdup("NOT");
+					break;
+				case E_EXIST: //Case ~ex x y to all x ~y
+					count++;
+					f->type=E_ALL;
+					f->name=strdup("ALL");
+					f->list=f->leftFormula->list;
+					f->leftFormula->list=NULL;
+					f->leftFormula->type=E_NOT;
+					f->leftFormula->name=strdup("NOT");
+					break;
+			}
+		}
+	}
+	return count;
+}
+
+void normalizeStep3(formula* f){
+	if (f!=NULL){
+		normalizeStep3(f->leftFormula);
+		normalizeStep3(f->rightFormula);
+		if ((f->type==E_NOT)&&(f->leftFormula->type==E_NOT)){
+			copyFormula(f, f->leftFormula->leftFormula);
+		}
+	}
+}
+
+void copyFormula(formula* target, formula* source){
+	target->name=source->name;
+	target->type=source->type;
+	target->rightFormula=source->rightFormula;
+	target->leftFormula=source->leftFormula;
+	target->list=source->list;
+}
 int main (int argc, char* argv[])
 {
+	++argv, --argc;
+	if (argc>0)
+		yyin = fopen(argv[0],"r");
+	else
+		yyin = stdin;
+	
 	#ifdef DEBUG
 		puts("bison: Starting");
 	#endif
-	return yyparse();
+	int result_int=yyparse();
+	
+	
+	#ifdef DEBUG
+		puts("bison: Ending");
+	#endif
+	normalizeStep1(result);
+	while(normalizeStep2(result));
+	normalizeStep3(result);
+	puts("bison: normalized formula");
+	
+	printFormula(result,0);
+	return result_int;
 }
