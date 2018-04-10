@@ -4,6 +4,7 @@
 %{
 	#include "logic.tab.h"
 	#include "structs.h"
+	//#define DEBUG
 %}
 
 DIGIT    [0-9]
@@ -12,74 +13,102 @@ INTEGER {DIGIT}+
 %%
 
 [n-z]{INTEGER}?   {/* variable */
-		   printf("lexer: variable: %s\n", yytext );
-		   yylval.name=strdup(yytext);
-		   return VARIABLE;
+			#ifdef DEBUG
+				printf("lexer: variable: %s\n", yytext );
+			#endif
+			yylval.name=strdup(yytext);
+			return VARIABLE;
             }
 
 [a-m]{INTEGER}?       {/* function name */
-            printf("lexer: function name: %s\n",yytext );
+			#ifdef DEBUG
+				printf("lexer: function name: %s\n",yytext );
+			#endif
 			yylval.name=strdup(yytext);
 			return FUNCTION;
             }
 			
 [A-Z]{INTEGER}?       {/* predicate */
-            printf("lexer: predicate: %s\n",yytext );
+			#ifdef DEBUG
+				printf("lexer: predicate: %s\n",yytext );
+			#endif
 			yylval.name=strdup(yytext);
 			return PREDICATE;
             }
 			
 \& {
-	printf("lexer: AND\n");
+	#ifdef DEBUG
+		printf("lexer: AND\n");
+	#endif
 	return AND;
 			}
 \| {
-	printf("lexer: OR\n");
+	#ifdef DEBUG
+		printf("lexer: OR\n");
+	#endif
 	return OR;
 			}
 \~ {
-	printf("lexer: NOT\n");
+	#ifdef DEBUG
+		printf("lexer: NOT\n");
+	#endif
 	return NOT;
 			}
 	
 \-\> {
-	printf("lexer: IMPLICATION\n");
+	#ifdef DEBUG
+		printf("lexer: IMPLICATION\n");
+	#endif
 	return IMPLICATION;
 			}
 \<\-\> {
-	printf("lexer: EQUIVALENCE\n");
+	#ifdef DEBUG
+		printf("lexer: EQUIVALENCE\n");
+	#endif
 	return EQUIVALENCE;
 			}
 			
 all {
-	printf("lexer: ALL\n");
+	#ifdef DEBUG
+		printf("lexer: ALL\n");
+	#endif
 	return ALL;
 			}
 
 ex   {/* quantifier */
-   printf("lexer: EXIST\n");
-   return EXIST;
+	#ifdef DEBUG
+		printf("lexer: EXIST\n");
+	#endif
+	return EXIST;
             }	
 
 top   {/* top */
-   printf("lexer: TOP\n");
-   return TOP;
+	#ifdef DEBUG
+		printf("lexer: TOP\n");
+	#endif
+	return TOP;
             }	
 bottom   {/* bottom */
-   printf("lexer: BOTTOM\n");
-   return BOTTOM;
+	#ifdef DEBUG
+		printf("lexer: BOTTOM\n");
+	#endif
+	return BOTTOM;
             }			
 
 [ ] {/* space*/
    
 		}			
 \( {/*open parenthesis*/
-	printf("lexer: parenthesis: %s\n",yytext);
+	#ifdef DEBUG
+		printf("lexer: parenthesis: %s\n",yytext);
+	#endif
 	return OPENPAR;
 	}	
 	
 \) {/*close parenthesis*/
-	printf("lexer: parenthesis: %s\n",yytext);
+	#ifdef DEBUG
+		printf("lexer: parenthesis: %s\n",yytext);
+	#endif
 	return CLOSEPAR;
 	}		
 	
@@ -87,7 +116,9 @@ bottom   {/* bottom */
 	}
 
 \, {/*comma*/
-	printf("lexer: comma: %s\n", yytext);
+	#ifdef DEBUG
+		printf("lexer: comma: %s\n", yytext);
+	#endif
 	return COMMA;
 }
 \n|. { 
