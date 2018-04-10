@@ -11,17 +11,12 @@
 	
 	extern int yyerror(char* err);
 	extern int yylex(void);
-	/*extern char* strdup(char*);
-	extern char* strcat(char*, char*);
-	extern int strcmp(char*,char*);
-	extern int strcpy(char*,char*);*/
 	void addToList(termSequence* head, termSequence* tail);
 	void debugPrintTermsequence(termSequence* tlist);
 	void printFormula(formula* f,int indent);
 	formula* createFormula(fType t,char* name);
-	char* termsequenceToStr(termSequence* tlist, int indent);
-	char* argssequenceToStr(termSequence* tlist, int indent);
 	char* indentStr(int n);
+	void printTermSequence(termSequence* tlist, int indent);
    
 	formula* result; 
 	
@@ -79,7 +74,7 @@ formula:  atom {
 					#endif
 					}
 		| OPENPAR formula CLOSEPAR {
-					$<f>$=$<f>1;	
+					$<f>$=$<f>2;	
 					#ifdef DEBUG
 						puts("bison: formula = ( formula )");	
 					#endif
@@ -229,7 +224,7 @@ atom:     PREDICATE {
 					#ifdef DEBUG
 						puts("bison: atom = predicate(termsequence)");
 						puts(atom->name);
-						puts(termsequenceToStr(atom->list,1));
+						printTermSequence(atom->list,1);
 					#endif
 					}
 		| term {
@@ -258,7 +253,7 @@ void printFormula(formula* f,int indent){
 		switch(f->type){
 			case E_ATOM:
 				if((f->list)!=NULL){
-					printf("%s%s\n",indentStr(indent),termsequenceToStr(f->list,indent));
+					printTermSequence(f->list,indent);
 				}
 				break;
 			case E_AND:
@@ -267,7 +262,7 @@ void printFormula(formula* f,int indent){
 				break;
 			case E_ALL:
 				if(f->list!=NULL)
-					printf("%s%s\n",indentStr(indent),termsequenceToStr(f->list,indent));
+					printTermSequence(f->list,indent);
 				printFormula(f->leftFormula,indent);
 				printFormula(f->rightFormula,indent);
 				break;
@@ -279,7 +274,7 @@ void printFormula(formula* f,int indent){
 				break;
 			case E_EXIST:
 				if(f->list!=NULL)
-					printf("%s%s\n",indentStr(indent),termsequenceToStr(f->list,indent));
+					printTermSequence(f->list,indent);
 				printFormula(f->leftFormula,indent);
 				printFormula(f->rightFormula,indent);
 				break;
@@ -321,37 +316,21 @@ void addToList(termSequence* head, termSequence* tail){
 	pointer->list=tail;
 }
 
-char* termsequenceToStr(termSequence* tlist, int indent){ //char* return result
-	char* result=NULL;
+void printTermSequence(termSequence* tlist, int indent){
 	
 	while(tlist!=NULL){
-		if(result!=NULL) {
-			realloc(result,strlen(result)+strlen("\n")+strlen(indentStr(indent))+strlen(tlist->name));
-			strcat(result,"\n");
-			strcat(result,indentStr(indent));
-			strcat(result,tlist->name);
-		}
-		else {
-			result=(char*)malloc(strlen(tlist->name));
-			strcpy(result,tlist->name);
-		}
+		//puts(tlist->name);
+		printf("%s%s\n",indentStr(indent),tlist->name);
 		if (tlist->args!=NULL){
-			char* arguments=strdup(termsequenceToStr(tlist->args, indent+1));
-			result=realloc(result,strlen(result)+strlen("\n")+strlen(indentStr(indent+1))+strlen(arguments));
-			strcat(result,"\n");
-			strcat(result,indentStr(indent+1));
-			strcat(result,strdup(arguments));
+			printTermSequence(tlist->args, indent+1);
 		}
 		tlist=tlist->list;
 	}
-	//hier Fehler bei result
-	return result;
 }
-
 
 void debugPrintTermsequence(termSequence* tlist){
 	puts("termSequence:");
-	puts(termsequenceToStr(tlist,0)); 
+	printTermSequence(tlist,0); 
 }
 
 formula* createFormula(fType t,char* name)
