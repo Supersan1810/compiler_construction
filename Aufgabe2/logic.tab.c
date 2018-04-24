@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.0.2.  */
+/* A Bison parser, made by GNU Bison 3.0.4.  */
 
 /* Bison implementation for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "3.0.2"
+#define YYBISON_VERSION "3.0.4"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -79,12 +79,13 @@
 	formula* createFormula(fType t,char* name);
 	char* indentStr(int n);
 	void printTermSequence(termSequence* tlist, int indent);
-	void copyFormula(formula* target, formula* source);
+	formula* copyFormula(formula* source);
+	termSequence* copyTermSequence(termSequence* source);
    
 	formula* result; 
 	
 
-#line 88 "logic.tab.c" /* yacc.c:339  */
+#line 89 "logic.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -119,38 +120,40 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    OPENPAR = 258,
-    CLOSEPAR = 259,
-    COMMA = 260,
-    TOP = 261,
-    BOTTOM = 262,
-    VARIABLE = 263,
-    EQUIVALENCE = 264,
-    IMPLICATION = 265,
-    OR = 266,
-    AND = 267,
-    NOT = 268,
-    ALL = 269,
-    EXIST = 270,
-    PREDICATE = 271,
-    FUNCTION = 272,
-    ERROR = 273
+    COMMA = 258,
+    TOP = 259,
+    BOTTOM = 260,
+    VARIABLE = 261,
+    EQUIVALENCE = 262,
+    IMPLICATION = 263,
+    OR = 264,
+    AND = 265,
+    NOT = 266,
+    ALL = 267,
+    EXIST = 268,
+    PREDICATE = 269,
+    FUNCTION = 270,
+    ERROR = 271,
+    OPENPAR = 272,
+    CLOSEPAR = 273
   };
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE YYSTYPE;
+
 union YYSTYPE
 {
-#line 27 "logic.y" /* yacc.c:355  */
+#line 28 "logic.y" /* yacc.c:355  */
  /*for yylval*/
    char* name;
    struct formula* f;
    struct termSequence* list;
 
-#line 153 "logic.tab.c" /* yacc.c:355  */
+#line 154 "logic.tab.c" /* yacc.c:355  */
 };
+
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
@@ -164,7 +167,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 168 "logic.tab.c" /* yacc.c:358  */
+#line 171 "logic.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -406,7 +409,7 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  20
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   46
+#define YYLAST   50
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  19
@@ -463,9 +466,9 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    54,    54,    62,    69,    78,    84,    92,   100,   110,
-     120,   130,   140,   150,   161,   169,   179,   190,   201,   214,
-     222,   232
+       0,    56,    56,    64,    71,    80,    86,    94,   102,   112,
+     122,   132,   142,   152,   163,   171,   181,   192,   203,   216,
+     224,   234
 };
 #endif
 
@@ -474,10 +477,10 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "OPENPAR", "CLOSEPAR", "COMMA", "TOP",
-  "BOTTOM", "VARIABLE", "EQUIVALENCE", "IMPLICATION", "OR", "AND", "NOT",
-  "ALL", "EXIST", "PREDICATE", "FUNCTION", "ERROR", "$accept", "result",
-  "formula", "termsequence", "term", "atom", YY_NULLPTR
+  "$end", "error", "$undefined", "COMMA", "TOP", "BOTTOM", "VARIABLE",
+  "EQUIVALENCE", "IMPLICATION", "OR", "AND", "NOT", "ALL", "EXIST",
+  "PREDICATE", "FUNCTION", "ERROR", "OPENPAR", "CLOSEPAR", "$accept",
+  "result", "formula", "termsequence", "term", "atom", YY_NULLPTR
 };
 #endif
 
@@ -491,10 +494,10 @@ static const yytype_uint16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF -9
+#define YYPACT_NINF -8
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-9)))
+  (!!((Yystate) == (-8)))
 
 #define YYTABLE_NINF -1
 
@@ -505,10 +508,10 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      25,    25,    -9,    -9,    -9,    25,    -3,    -3,     4,    26,
-      35,    34,    -9,    -9,    -1,    -9,    25,    25,    -3,    -3,
-      -9,    25,    25,    25,    25,    -9,    -9,    -9,    11,    -9,
-      22,    34,     9,    -8,    -9,    -9,    -3,    -9,    -9
+      21,    -8,    -8,    -8,    21,    -4,    -4,    -7,    11,    21,
+      18,    36,    -8,    -8,    -8,    21,    21,    -4,    -4,    32,
+      -8,    21,    21,    21,    21,    -8,    -8,     1,    -8,     6,
+      -8,    -3,     7,    19,    -8,    -4,    -8,    -8,    -8
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -516,22 +519,22 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,     0,     6,     7,    16,     0,     0,     0,    19,    17,
-       0,     2,    21,     3,     0,     4,     0,     0,     0,     0,
-       1,     0,     0,     0,     0,     5,     8,     9,     0,    14,
-       0,    13,    12,    11,    10,    20,     0,    18,    15
+       0,     6,     7,    16,     0,     0,     0,    19,    17,     0,
+       0,     2,    21,     3,     4,     0,     0,     0,     0,     0,
+       1,     0,     0,     0,     0,     8,     9,     0,    14,     0,
+       5,    13,    12,    11,    10,     0,    20,    18,    15
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -9,    -9,     1,    15,    -6,    -9
+      -8,    -8,    -1,    13,    -5,    -8
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,    10,    11,    28,    12,    13
+      -1,    10,    11,    27,    12,    13
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -539,30 +542,32 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      16,    17,    14,    25,    24,     4,    15,    18,    21,    22,
-      23,    24,    29,    29,     9,    35,    36,    26,    27,    22,
-      23,    24,    31,    32,    33,    34,    37,    36,     1,    19,
-      38,     2,     3,     4,    30,    20,     0,     0,     5,     6,
-       7,     8,     9,    21,    22,    23,    24
+      15,    16,     3,    14,    35,    22,    23,    24,    19,    35,
+      17,     8,    28,    28,    25,    26,    23,    24,    20,    36,
+      31,    32,    33,    34,    37,     1,     2,     3,    18,    24,
+      38,    29,     4,     5,     6,     7,     8,     0,     9,    21,
+      22,    23,    24,    21,    22,    23,    24,     0,     0,     0,
+      30
 };
 
 static const yytype_int8 yycheck[] =
 {
-       6,     7,     1,     4,    12,     8,     5,     3,     9,    10,
-      11,    12,    18,    19,    17,     4,     5,    16,    17,    10,
-      11,    12,    21,    22,    23,    24,     4,     5,     3,     3,
-      36,     6,     7,     8,    19,     0,    -1,    -1,    13,    14,
-      15,    16,    17,     9,    10,    11,    12
+       5,     6,     6,     4,     3,     8,     9,    10,     9,     3,
+      17,    15,    17,    18,    15,    16,     9,    10,     0,    18,
+      21,    22,    23,    24,    18,     4,     5,     6,    17,    10,
+      35,    18,    11,    12,    13,    14,    15,    -1,    17,     7,
+       8,     9,    10,     7,     8,     9,    10,    -1,    -1,    -1,
+      18
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     3,     6,     7,     8,    13,    14,    15,    16,    17,
-      20,    21,    23,    24,    21,    21,    23,    23,     3,     3,
-       0,     9,    10,    11,    12,     4,    21,    21,    22,    23,
-      22,    21,    21,    21,    21,     4,     5,     4,    23
+       0,     4,     5,     6,    11,    12,    13,    14,    15,    17,
+      20,    21,    23,    24,    21,    23,    23,    17,    17,    21,
+       0,     7,     8,     9,    10,    21,    21,    22,    23,    22,
+      18,    21,    21,    21,    21,     3,    18,    18,    23
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
@@ -1255,7 +1260,7 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 54 "logic.y" /* yacc.c:1646  */
+#line 56 "logic.y" /* yacc.c:1646  */
     {	
 					#ifdef DEBUG
 						puts("bison: Reached End. Formula tree:");
@@ -1263,11 +1268,11 @@ yyreduce:
 					result=(yyvsp[0].f);
 					printFormula(result,0);
 }
-#line 1267 "logic.tab.c" /* yacc.c:1646  */
+#line 1272 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
-#line 62 "logic.y" /* yacc.c:1646  */
+#line 64 "logic.y" /* yacc.c:1646  */
     {
 					(yyval.f)=(yyvsp[0].f);
 					#ifdef DEBUG
@@ -1275,11 +1280,11 @@ yyreduce:
 						puts((yyvsp[0].f)->name);
 					#endif
 					}
-#line 1279 "logic.tab.c" /* yacc.c:1646  */
+#line 1284 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 69 "logic.y" /* yacc.c:1646  */
+#line 71 "logic.y" /* yacc.c:1646  */
     {
 					formula* f=createFormula(E_NOT,strdup("NOT"));
 					f->leftFormula=(yyvsp[0].f);
@@ -1289,22 +1294,22 @@ yyreduce:
 						puts(f->name);
 					#endif
 					}
-#line 1293 "logic.tab.c" /* yacc.c:1646  */
+#line 1298 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 78 "logic.y" /* yacc.c:1646  */
+#line 80 "logic.y" /* yacc.c:1646  */
     {
 					(yyval.f)=(yyvsp[-1].f);	
 					#ifdef DEBUG
 						puts("bison: formula = ( formula )");	
 					#endif
 			}
-#line 1304 "logic.tab.c" /* yacc.c:1646  */
+#line 1309 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 84 "logic.y" /* yacc.c:1646  */
+#line 86 "logic.y" /* yacc.c:1646  */
     {
 					formula* f=createFormula(E_TOP,strdup("TOP"));
 					(yyval.f)=f;
@@ -1313,11 +1318,11 @@ yyreduce:
 						puts(f->name);
 					#endif
 			}
-#line 1317 "logic.tab.c" /* yacc.c:1646  */
+#line 1322 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 92 "logic.y" /* yacc.c:1646  */
+#line 94 "logic.y" /* yacc.c:1646  */
     {
 					formula* f=createFormula(E_BOTTOM,strdup("BOTTOM"));
 					(yyval.f)=f;
@@ -1326,11 +1331,11 @@ yyreduce:
 						puts(f->name);
 					#endif
 			}
-#line 1330 "logic.tab.c" /* yacc.c:1646  */
+#line 1335 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 100 "logic.y" /* yacc.c:1646  */
+#line 102 "logic.y" /* yacc.c:1646  */
     {
 					formula* f=createFormula(E_ALL,strdup("ALL"));
 					f->list=(yyvsp[-1].list);
@@ -1341,11 +1346,11 @@ yyreduce:
 						puts(f->name);
 					#endif
 					}
-#line 1345 "logic.tab.c" /* yacc.c:1646  */
+#line 1350 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
-#line 110 "logic.y" /* yacc.c:1646  */
+#line 112 "logic.y" /* yacc.c:1646  */
     {
 					formula* f=createFormula(E_EXIST,strdup("EXIST"));
 					f->list=(yyvsp[-1].list);
@@ -1356,11 +1361,11 @@ yyreduce:
 						puts(f->name);
 					#endif
 					}
-#line 1360 "logic.tab.c" /* yacc.c:1646  */
+#line 1365 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
-#line 120 "logic.y" /* yacc.c:1646  */
+#line 122 "logic.y" /* yacc.c:1646  */
     {
 					formula* f=createFormula(E_AND,strdup("AND"));
 					f->leftFormula=(yyvsp[-2].f);
@@ -1371,11 +1376,11 @@ yyreduce:
 						puts(f->name);
 					#endif
 					}
-#line 1375 "logic.tab.c" /* yacc.c:1646  */
+#line 1380 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
-#line 130 "logic.y" /* yacc.c:1646  */
+#line 132 "logic.y" /* yacc.c:1646  */
     {
 					formula* f=createFormula(E_OR,strdup("OR"));
 					f->leftFormula=(yyvsp[-2].f);
@@ -1386,11 +1391,11 @@ yyreduce:
 						puts(f->name);
 					#endif
 					}
-#line 1390 "logic.tab.c" /* yacc.c:1646  */
+#line 1395 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 140 "logic.y" /* yacc.c:1646  */
+#line 142 "logic.y" /* yacc.c:1646  */
     {
 					formula* f=createFormula(E_IMPLICATION,strdup("IMPLICATION"));
 					f->leftFormula=(yyvsp[-2].f);
@@ -1401,11 +1406,11 @@ yyreduce:
 						puts(f->name);
 					#endif
 					}
-#line 1405 "logic.tab.c" /* yacc.c:1646  */
+#line 1410 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 150 "logic.y" /* yacc.c:1646  */
+#line 152 "logic.y" /* yacc.c:1646  */
     {
 					formula* f=createFormula(E_EQUIVALENCE,strdup("EQUIVALENCE"));
 					f->leftFormula=(yyvsp[-2].f);
@@ -1416,11 +1421,11 @@ yyreduce:
 						puts("bison: formula = formula equivalence formula");
 					#endif
 					}
-#line 1420 "logic.tab.c" /* yacc.c:1646  */
+#line 1425 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 161 "logic.y" /* yacc.c:1646  */
+#line 163 "logic.y" /* yacc.c:1646  */
     {
 					struct termSequence* t =(yyvsp[0].list);
 					(yyval.list)=t;
@@ -1429,11 +1434,11 @@ yyreduce:
 						puts(t->name);
 					#endif
 					}
-#line 1433 "logic.tab.c" /* yacc.c:1646  */
+#line 1438 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 169 "logic.y" /* yacc.c:1646  */
+#line 171 "logic.y" /* yacc.c:1646  */
     {
 					struct termSequence* t=(yyvsp[-2].list);
 					addToList(t,(yyvsp[0].list)); /*x->y */						
@@ -1443,11 +1448,11 @@ yyreduce:
 						debugPrintTermsequence(t);
 					#endif
 		}
-#line 1447 "logic.tab.c" /* yacc.c:1646  */
+#line 1452 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 179 "logic.y" /* yacc.c:1646  */
+#line 181 "logic.y" /* yacc.c:1646  */
     {
 					struct termSequence* t=(termSequence*)malloc(sizeof(termSequence));
 					t->name=(yyvsp[0].name);
@@ -1459,11 +1464,11 @@ yyreduce:
 						puts(t->name);
 					#endif
 					}
-#line 1463 "logic.tab.c" /* yacc.c:1646  */
+#line 1468 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 190 "logic.y" /* yacc.c:1646  */
+#line 192 "logic.y" /* yacc.c:1646  */
     {
 					struct termSequence* func=(termSequence*)malloc(sizeof(termSequence));
 					func->name=(yyvsp[0].name);
@@ -1475,11 +1480,11 @@ yyreduce:
 						puts(func->name);
 					#endif
 					}
-#line 1479 "logic.tab.c" /* yacc.c:1646  */
+#line 1484 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 201 "logic.y" /* yacc.c:1646  */
+#line 203 "logic.y" /* yacc.c:1646  */
     {
 					struct termSequence* func=(termSequence*)malloc(sizeof(termSequence));
 					func->name=(yyvsp[-3].name);
@@ -1492,11 +1497,11 @@ yyreduce:
 						debugPrintTermsequence(func->args);
 					#endif
 		}
-#line 1496 "logic.tab.c" /* yacc.c:1646  */
+#line 1501 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 214 "logic.y" /* yacc.c:1646  */
+#line 216 "logic.y" /* yacc.c:1646  */
     {
 					struct formula* atom=createFormula(E_ATOM,(yyvsp[0].name));
 					(yyval.f)=atom;
@@ -1505,11 +1510,11 @@ yyreduce:
 						puts(atom->name);
 					#endif
 					}
-#line 1509 "logic.tab.c" /* yacc.c:1646  */
+#line 1514 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 222 "logic.y" /* yacc.c:1646  */
+#line 224 "logic.y" /* yacc.c:1646  */
     {
 					struct formula* atom=createFormula(E_ATOM,(yyvsp[-3].name));
 					atom->list=(yyvsp[-1].list);
@@ -1520,11 +1525,11 @@ yyreduce:
 						printTermSequence(atom->list,1);
 					#endif
 					}
-#line 1524 "logic.tab.c" /* yacc.c:1646  */
+#line 1529 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 232 "logic.y" /* yacc.c:1646  */
+#line 234 "logic.y" /* yacc.c:1646  */
     {
 					struct formula* atom=createFormula(E_ATOM,(yyvsp[0].list)->name);
 					atom->list=(yyvsp[0].list)->args; /* required if term = function(termSequence)*/
@@ -1534,11 +1539,11 @@ yyreduce:
 						puts(atom->name);
 					#endif
 					}
-#line 1538 "logic.tab.c" /* yacc.c:1646  */
+#line 1543 "logic.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1542 "logic.tab.c" /* yacc.c:1646  */
+#line 1547 "logic.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1766,7 +1771,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 241 "logic.y" /* yacc.c:1906  */
+#line 243 "logic.y" /* yacc.c:1906  */
 
 
 int yyerror(char* err)
@@ -1892,10 +1897,14 @@ void normalizeStep1(formula* f){
 				f->leftFormula->leftFormula=tmpLeft;
 				f->leftFormula->rightFormula=tmpRight;
 				
+				formula* tmpLeft2=copyFormula(tmpLeft);
+				
+				formula* tmpRight2 = copyFormula(tmpRight);
+				
 				f->rightFormula->leftFormula=createFormula(E_NOT, strdup("NOT"));
-				f->rightFormula->leftFormula->leftFormula=tmpLeft;
+				f->rightFormula->leftFormula->leftFormula=tmpLeft2;
 				f->rightFormula->rightFormula=createFormula(E_NOT, strdup("NOT"));
-				f->rightFormula->rightFormula->leftFormula=tmpRight;
+				f->rightFormula->rightFormula->leftFormula=tmpRight2;
 	
 				break;
 			case E_IMPLICATION:
@@ -1920,6 +1929,7 @@ int normalizeStep2(formula* f){
 			
 			switch(f->leftFormula->type){
 				case E_AND: //Case ~(x AND y) to ~x OR ~ y
+					//printf("N AND\n");
 					count++;
 					f->type=E_OR;
 					f->name=strdup("OR");
@@ -1930,6 +1940,7 @@ int normalizeStep2(formula* f){
 					f->rightFormula->leftFormula=tmpRight;
 					break;
 				case E_OR: //Case ~(x OR y) to ~x AND ~ y
+					//printf("N OR\n");
 					count++;
 					f->type=E_AND;
 					f->name=strdup("AND");
@@ -1941,6 +1952,7 @@ int normalizeStep2(formula* f){
 					f->rightFormula->leftFormula=tmpRight;
 					break;
 				case E_ALL: //Case ~all x y to ex x ~y
+					//printf("N ALL\n");
 					count++;
 					f->type=E_EXIST;
 					f->name=strdup("EXIST");
@@ -1950,6 +1962,7 @@ int normalizeStep2(formula* f){
 					f->leftFormula->name=strdup("NOT");
 					break;
 				case E_EXIST: //Case ~ex x y to all x ~y
+					//printf("N EXIST\n");
 					count++;
 					f->type=E_ALL;
 					f->name=strdup("ALL");
@@ -1964,23 +1977,39 @@ int normalizeStep2(formula* f){
 	return count;
 }
 
-void normalizeStep3(formula* f){
+formula* normalizeStep3(formula* f){
 	if (f!=NULL){
-		normalizeStep3(f->leftFormula);
-		normalizeStep3(f->rightFormula);
 		if ((f->type==E_NOT)&&(f->leftFormula->type==E_NOT)){
-			copyFormula(f, f->leftFormula->leftFormula);
+			f=copyFormula(f->leftFormula->leftFormula);
 		}
+		f->leftFormula=normalizeStep3(f->leftFormula);
+		f->rightFormula=normalizeStep3(f->rightFormula);
 	}
+	return f;
 }
 
-void copyFormula(formula* target, formula* source){
-	target->name=source->name;
-	target->type=source->type;
-	target->rightFormula=source->rightFormula;
-	target->leftFormula=source->leftFormula;
-	target->list=source->list;
+formula* copyFormula(formula* source){
+	if (source!=NULL){
+		formula* target = createFormula(source->type, strdup(source->name));
+		target->list=copyTermSequence(source->list);
+		target->rightFormula=copyFormula(source->rightFormula);
+		target->leftFormula=copyFormula(source->leftFormula);
+		return target;
+	}else return NULL;
 }
+
+termSequence* copyTermSequence(termSequence* source){
+	if (source!=NULL){
+		termSequence* target = (termSequence*) malloc(sizeof(termSequence*));
+		target->name = strdup(source->name);
+		target->list=copyTermSequence(source->list);
+		target->args=copyTermSequence(source->args);
+		return target;
+	}
+	else return NULL;
+}
+
+
 int main (int argc, char* argv[])
 {
 	++argv, --argc;
@@ -1999,10 +2028,18 @@ int main (int argc, char* argv[])
 		puts("bison: Ending");
 	#endif
 	normalizeStep1(result);
+	#ifdef DEBUG
+	puts("bison: after step 1");
+	printFormula(result,0);
+	#endif
 	while(normalizeStep2(result));
-	normalizeStep3(result);
-	puts("bison: normalized formula");
+	#ifdef DEBUG
+	puts("bison: after step 2");
+	printFormula(result,0);
+	#endif
+	result=normalizeStep3(result);
 	
+	puts("bison: normalized formula");
 	printFormula(result,0);
 	return result_int;
 }

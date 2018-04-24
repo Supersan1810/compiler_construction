@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.0.2.  */
+/* A Bison parser, made by GNU Bison 3.0.4.  */
 
 /* Bison interface for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -45,31 +45,31 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    OPENPAR = 258,
-    CLOSEPAR = 259,
-    COMMA = 260,
-    TOP = 261,
-    BOTTOM = 262,
-    VARIABLE = 263,
-    EQUIVALENCE = 264,
-    IMPLICATION = 265,
-    OR = 266,
-    AND = 267,
-    NOT = 268,
-    ALL = 269,
-    EXIST = 270,
-    PREDICATE = 271,
-    FUNCTION = 272,
-    ERROR = 273
+    COMMA = 258,
+    TOP = 259,
+    BOTTOM = 260,
+    VARIABLE = 261,
+    EQUIVALENCE = 262,
+    IMPLICATION = 263,
+    OR = 264,
+    AND = 265,
+    NOT = 266,
+    ALL = 267,
+    EXIST = 268,
+    PREDICATE = 269,
+    FUNCTION = 270,
+    ERROR = 271,
+    OPENPAR = 272,
+    CLOSEPAR = 273
   };
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE YYSTYPE;
+
 union YYSTYPE
 {
-#line 27 "logic.y" /* yacc.c:1909  */
+#line 28 "logic.y" /* yacc.c:1909  */
  /*for yylval*/
    char* name;
    struct formula* f;
@@ -77,6 +77,8 @@ union YYSTYPE
 
 #line 79 "logic.tab.h" /* yacc.c:1909  */
 };
+
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
