@@ -397,7 +397,7 @@ int normalizeStep2(formula* f){
 			
 			switch(f->leftFormula->type){
 				case E_AND: //Case ~(x AND y) to ~x OR ~ y
-					printf("N AND\n");
+					//printf("N AND\n");
 					count++;
 					f->type=E_OR;
 					f->name=strdup("OR");
@@ -408,7 +408,7 @@ int normalizeStep2(formula* f){
 					f->rightFormula->leftFormula=tmpRight;
 					break;
 				case E_OR: //Case ~(x OR y) to ~x AND ~ y
-					printf("N OR\n");
+					//printf("N OR\n");
 					count++;
 					f->type=E_AND;
 					f->name=strdup("AND");
@@ -420,7 +420,7 @@ int normalizeStep2(formula* f){
 					f->rightFormula->leftFormula=tmpRight;
 					break;
 				case E_ALL: //Case ~all x y to ex x ~y
-					printf("N ALL\n");
+					//printf("N ALL\n");
 					count++;
 					f->type=E_EXIST;
 					f->name=strdup("EXIST");
@@ -430,7 +430,7 @@ int normalizeStep2(formula* f){
 					f->leftFormula->name=strdup("NOT");
 					break;
 				case E_EXIST: //Case ~ex x y to all x ~y
-					printf("N EXIST\n");
+					//printf("N EXIST\n");
 					count++;
 					f->type=E_ALL;
 					f->name=strdup("ALL");
@@ -496,15 +496,18 @@ int main (int argc, char* argv[])
 		puts("bison: Ending");
 	#endif
 	normalizeStep1(result);
+	#ifdef DEBUG
 	puts("bison: after step 1");
 	printFormula(result,0);
+	#endif
 	while(normalizeStep2(result));
+	#ifdef DEBUG
 	puts("bison: after step 2");
 	printFormula(result,0);
+	#endif
 	result=normalizeStep3(result);
 	
 	puts("bison: normalized formula");
-	
 	printFormula(result,0);
 	return result_int;
 }

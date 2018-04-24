@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.0.2.  */
+/* A Bison parser, made by GNU Bison 3.0.4.  */
 
 /* Bison implementation for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "3.0.2"
+#define YYBISON_VERSION "3.0.4"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -141,7 +141,7 @@ extern int yydebug;
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE YYSTYPE;
+
 union YYSTYPE
 {
 #line 28 "logic.y" /* yacc.c:355  */
@@ -152,6 +152,8 @@ union YYSTYPE
 
 #line 154 "logic.tab.c" /* yacc.c:355  */
 };
+
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
@@ -165,7 +167,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 169 "logic.tab.c" /* yacc.c:358  */
+#line 171 "logic.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -1266,7 +1268,7 @@ yyreduce:
 					result=(yyvsp[0].f);
 					printFormula(result,0);
 }
-#line 1270 "logic.tab.c" /* yacc.c:1646  */
+#line 1272 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 3:
@@ -1278,7 +1280,7 @@ yyreduce:
 						puts((yyvsp[0].f)->name);
 					#endif
 					}
-#line 1282 "logic.tab.c" /* yacc.c:1646  */
+#line 1284 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
@@ -1292,7 +1294,7 @@ yyreduce:
 						puts(f->name);
 					#endif
 					}
-#line 1296 "logic.tab.c" /* yacc.c:1646  */
+#line 1298 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
@@ -1303,7 +1305,7 @@ yyreduce:
 						puts("bison: formula = ( formula )");	
 					#endif
 			}
-#line 1307 "logic.tab.c" /* yacc.c:1646  */
+#line 1309 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
@@ -1316,7 +1318,7 @@ yyreduce:
 						puts(f->name);
 					#endif
 			}
-#line 1320 "logic.tab.c" /* yacc.c:1646  */
+#line 1322 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
@@ -1329,7 +1331,7 @@ yyreduce:
 						puts(f->name);
 					#endif
 			}
-#line 1333 "logic.tab.c" /* yacc.c:1646  */
+#line 1335 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
@@ -1344,7 +1346,7 @@ yyreduce:
 						puts(f->name);
 					#endif
 					}
-#line 1348 "logic.tab.c" /* yacc.c:1646  */
+#line 1350 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 9:
@@ -1359,7 +1361,7 @@ yyreduce:
 						puts(f->name);
 					#endif
 					}
-#line 1363 "logic.tab.c" /* yacc.c:1646  */
+#line 1365 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 10:
@@ -1374,7 +1376,7 @@ yyreduce:
 						puts(f->name);
 					#endif
 					}
-#line 1378 "logic.tab.c" /* yacc.c:1646  */
+#line 1380 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 11:
@@ -1389,7 +1391,7 @@ yyreduce:
 						puts(f->name);
 					#endif
 					}
-#line 1393 "logic.tab.c" /* yacc.c:1646  */
+#line 1395 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
@@ -1404,7 +1406,7 @@ yyreduce:
 						puts(f->name);
 					#endif
 					}
-#line 1408 "logic.tab.c" /* yacc.c:1646  */
+#line 1410 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
@@ -1419,7 +1421,7 @@ yyreduce:
 						puts("bison: formula = formula equivalence formula");
 					#endif
 					}
-#line 1423 "logic.tab.c" /* yacc.c:1646  */
+#line 1425 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
@@ -1432,7 +1434,7 @@ yyreduce:
 						puts(t->name);
 					#endif
 					}
-#line 1436 "logic.tab.c" /* yacc.c:1646  */
+#line 1438 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
@@ -1446,7 +1448,7 @@ yyreduce:
 						debugPrintTermsequence(t);
 					#endif
 		}
-#line 1450 "logic.tab.c" /* yacc.c:1646  */
+#line 1452 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
@@ -1462,7 +1464,7 @@ yyreduce:
 						puts(t->name);
 					#endif
 					}
-#line 1466 "logic.tab.c" /* yacc.c:1646  */
+#line 1468 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
@@ -1478,7 +1480,7 @@ yyreduce:
 						puts(func->name);
 					#endif
 					}
-#line 1482 "logic.tab.c" /* yacc.c:1646  */
+#line 1484 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
@@ -1495,7 +1497,7 @@ yyreduce:
 						debugPrintTermsequence(func->args);
 					#endif
 		}
-#line 1499 "logic.tab.c" /* yacc.c:1646  */
+#line 1501 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
@@ -1508,7 +1510,7 @@ yyreduce:
 						puts(atom->name);
 					#endif
 					}
-#line 1512 "logic.tab.c" /* yacc.c:1646  */
+#line 1514 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
@@ -1523,7 +1525,7 @@ yyreduce:
 						printTermSequence(atom->list,1);
 					#endif
 					}
-#line 1527 "logic.tab.c" /* yacc.c:1646  */
+#line 1529 "logic.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
@@ -1537,11 +1539,11 @@ yyreduce:
 						puts(atom->name);
 					#endif
 					}
-#line 1541 "logic.tab.c" /* yacc.c:1646  */
+#line 1543 "logic.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1545 "logic.tab.c" /* yacc.c:1646  */
+#line 1547 "logic.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1927,7 +1929,7 @@ int normalizeStep2(formula* f){
 			
 			switch(f->leftFormula->type){
 				case E_AND: //Case ~(x AND y) to ~x OR ~ y
-					printf("N AND\n");
+					//printf("N AND\n");
 					count++;
 					f->type=E_OR;
 					f->name=strdup("OR");
@@ -1938,7 +1940,7 @@ int normalizeStep2(formula* f){
 					f->rightFormula->leftFormula=tmpRight;
 					break;
 				case E_OR: //Case ~(x OR y) to ~x AND ~ y
-					printf("N OR\n");
+					//printf("N OR\n");
 					count++;
 					f->type=E_AND;
 					f->name=strdup("AND");
@@ -1950,7 +1952,7 @@ int normalizeStep2(formula* f){
 					f->rightFormula->leftFormula=tmpRight;
 					break;
 				case E_ALL: //Case ~all x y to ex x ~y
-					printf("N ALL\n");
+					//printf("N ALL\n");
 					count++;
 					f->type=E_EXIST;
 					f->name=strdup("EXIST");
@@ -1960,7 +1962,7 @@ int normalizeStep2(formula* f){
 					f->leftFormula->name=strdup("NOT");
 					break;
 				case E_EXIST: //Case ~ex x y to all x ~y
-					printf("N EXIST\n");
+					//printf("N EXIST\n");
 					count++;
 					f->type=E_ALL;
 					f->name=strdup("ALL");
@@ -2026,15 +2028,18 @@ int main (int argc, char* argv[])
 		puts("bison: Ending");
 	#endif
 	normalizeStep1(result);
+	#ifdef DEBUG
 	puts("bison: after step 1");
 	printFormula(result,0);
+	#endif
 	while(normalizeStep2(result));
+	#ifdef DEBUG
 	puts("bison: after step 2");
 	printFormula(result,0);
+	#endif
 	result=normalizeStep3(result);
 	
 	puts("bison: normalized formula");
-	
 	printFormula(result,0);
 	return result_int;
 }
