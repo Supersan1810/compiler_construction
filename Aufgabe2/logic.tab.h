@@ -45,22 +45,22 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    OPENPAR = 258,
-    CLOSEPAR = 259,
-    COMMA = 260,
-    TOP = 261,
-    BOTTOM = 262,
-    VARIABLE = 263,
-    EQUIVALENCE = 264,
-    IMPLICATION = 265,
-    OR = 266,
-    AND = 267,
-    NOT = 268,
-    ALL = 269,
-    EXIST = 270,
-    PREDICATE = 271,
-    FUNCTION = 272,
-    ERROR = 273
+    COMMA = 258,
+    TOP = 259,
+    BOTTOM = 260,
+    VARIABLE = 261,
+    EQUIVALENCE = 262,
+    IMPLICATION = 263,
+    OR = 264,
+    AND = 265,
+    NOT = 266,
+    ALL = 267,
+    EXIST = 268,
+    PREDICATE = 269,
+    FUNCTION = 270,
+    ERROR = 271,
+    OPENPAR = 272,
+    CLOSEPAR = 273
   };
 #endif
 
@@ -69,7 +69,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 27 "logic.y" /* yacc.c:1909  */
+#line 28 "logic.y" /* yacc.c:1909  */
  /*for yylval*/
    char* name;
    struct formula* f;

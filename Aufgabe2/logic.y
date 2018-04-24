@@ -18,7 +18,8 @@
 	formula* createFormula(fType t,char* name);
 	char* indentStr(int n);
 	void printTermSequence(termSequence* tlist, int indent);
-	void copyFormula(formula* target, formula* source);
+	formula* copyFormula(formula* source);
+	termSequence* copyTermSequence(termSequence* source);
    
 	formula* result; 
 	
@@ -33,14 +34,13 @@
 
 %start result
 
-%token OPENPAR
-%token CLOSEPAR
-%token COMMA
+
+%left COMMA
 %token TOP
 %token BOTTOM
 %token VARIABLE
-%precedence EQUIVALENCE
-%precedence IMPLICATION
+%left EQUIVALENCE
+%left IMPLICATION
 %left  OR
 %left  AND
 %precedence  NOT
@@ -48,6 +48,8 @@
 %precedence PREDICATE
 %precedence FUNCTION
 %precedence ERROR
+%precedence OPENPAR
+%precedence CLOSEPAR
 
 
 %%
@@ -363,10 +365,14 @@ void normalizeStep1(formula* f){
 				f->leftFormula->leftFormula=tmpLeft;
 				f->leftFormula->rightFormula=tmpRight;
 				
+				formula* tmpLeft2=copyFormula(tmpLeft);
+				
+				formula* tmpRight2 = copyFormula(tmpRight);
+				
 				f->rightFormula->leftFormula=createFormula(E_NOT, strdup("NOT"));
-				f->rightFormula->leftFormula->leftFormula=tmpLeft;
+				f->rightFormula->leftFormula->leftFormula=tmpLeft2;
 				f->rightFormula->rightFormula=createFormula(E_NOT, strdup("NOT"));
-				f->rightFormula->rightFormula->leftFormula=tmpRight;
+				f->rightFormula->rightFormula->leftFormula=tmpRight2;
 	
 				break;
 			case E_IMPLICATION:
@@ -391,6 +397,7 @@ int normalizeStep2(formula* f){
 			
 			switch(f->leftFormula->type){
 				case E_AND: //Case ~(x AND y) to ~x OR ~ y
+					printf("N AND\n");
 					count++;
 					f->type=E_OR;
 					f->name=strdup("OR");
@@ -401,6 +408,7 @@ int normalizeStep2(formula* f){
 					f->rightFormula->leftFormula=tmpRight;
 					break;
 				case E_OR: //Case ~(x OR y) to ~x AND ~ y
+					printf("N OR\n");
 					count++;
 					f->type=E_AND;
 					f->name=strdup("AND");
@@ -412,6 +420,7 @@ int normalizeStep2(formula* f){
 					f->rightFormula->leftFormula=tmpRight;
 					break;
 				case E_ALL: //Case ~all x y to ex x ~y
+					printf("N ALL\n");
 					count++;
 					f->type=E_EXIST;
 					f->name=strdup("EXIST");
@@ -421,6 +430,7 @@ int normalizeStep2(formula* f){
 					f->leftFormula->name=strdup("NOT");
 					break;
 				case E_EXIST: //Case ~ex x y to all x ~y
+					printf("N EXIST\n");
 					count++;
 					f->type=E_ALL;
 					f->name=strdup("ALL");
@@ -435,23 +445,39 @@ int normalizeStep2(formula* f){
 	return count;
 }
 
-void normalizeStep3(formula* f){
+formula* normalizeStep3(formula* f){
 	if (f!=NULL){
-		normalizeStep3(f->leftFormula);
-		normalizeStep3(f->rightFormula);
 		if ((f->type==E_NOT)&&(f->leftFormula->type==E_NOT)){
-			copyFormula(f, f->leftFormula->leftFormula);
+			f=copyFormula(f->leftFormula->leftFormula);
 		}
+		f->leftFormula=normalizeStep3(f->leftFormula);
+		f->rightFormula=normalizeStep3(f->rightFormula);
 	}
+	return f;
 }
 
-void copyFormula(formula* target, formula* source){
-	target->name=source->name;
-	target->type=source->type;
-	target->rightFormula=source->rightFormula;
-	target->leftFormula=source->leftFormula;
-	target->list=source->list;
+formula* copyFormula(formula* source){
+	if (source!=NULL){
+		formula* target = createFormula(source->type, strdup(source->name));
+		target->list=copyTermSequence(source->list);
+		target->rightFormula=copyFormula(source->rightFormula);
+		target->leftFormula=copyFormula(source->leftFormula);
+		return target;
+	}else return NULL;
 }
+
+termSequence* copyTermSequence(termSequence* source){
+	if (source!=NULL){
+		termSequence* target = (termSequence*) malloc(sizeof(termSequence*));
+		target->name = strdup(source->name);
+		target->list=copyTermSequence(source->list);
+		target->args=copyTermSequence(source->args);
+		return target;
+	}
+	else return NULL;
+}
+
+
 int main (int argc, char* argv[])
 {
 	++argv, --argc;
@@ -470,8 +496,13 @@ int main (int argc, char* argv[])
 		puts("bison: Ending");
 	#endif
 	normalizeStep1(result);
+	puts("bison: after step 1");
+	printFormula(result,0);
 	while(normalizeStep2(result));
-	normalizeStep3(result);
+	puts("bison: after step 2");
+	printFormula(result,0);
+	result=normalizeStep3(result);
+	
 	puts("bison: normalized formula");
 	
 	printFormula(result,0);
